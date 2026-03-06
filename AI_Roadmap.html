@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Engineering Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a26;
+    --accent1: #00f5a0;
+    --accent2: #00d9f5;
+    --accent3: #f500d9;
+    --accent4: #f5a000;
+    --text: #e8e8f0;
+    --muted: #6b6b8a;
+    --border: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,245,160,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 70px;
+    animation: fadeDown 0.8s ease forwards;
+  }
+
+  .header .badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent1);
+    border: 1px solid var(--accent1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 16px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent1), var(--accent2), var(--accent3), var(--accent4));
+  }
+
+  /* Phase */
+  .phase {
+    margin-bottom: 50px;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideIn 0.6s ease forwards;
+  }
+
+  .phase:nth-child(1) { animation-delay: 0.1s; }
+  .phase:nth-child(2) { animation-delay: 0.25s; }
+  .phase:nth-child(3) { animation-delay: 0.4s; }
+  .phase:nth-child(4) { animation-delay: 0.55s; }
+  .phase:nth-child(5) { animation-delay: 0.7s; }
+
+  .phase-dot {
+    position: absolute;
+    left: -32px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    margin-top: 6px;
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .phase-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  .phase-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    flex: 1;
+  }
+
+  .phase-duration {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .toggle-icon {
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.3s ease;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .phase-body {
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  .phase-body.collapsed {
+    max-height: 0;
+    opacity: 0;
+  }
+
+  .toggle-icon.rotated {
+    transform: rotate(-90deg);
+  }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* Phase colors */
+  .p1 .phase-dot { background: var(--accent1); }
+  .p1 .phase-num { background: rgba(0,245,160,0.1); color: var(--accent1); border: 1px solid rgba(0,245,160,0.3); }
+  .p1 .phase-title { color: var(--accent1); }
+  .p1 .card { border-color: rgba(0,245,160,0.15); }
+  .p1 .card:hover { border-color: rgba(0,245,160,0.4); }
+  .p1 .card::before { background: var(--accent1); }
+
+  .p2 .phase-dot { background: var(--accent2); }
+  .p2 .phase-num { background: rgba(0,217,245,0.1); color: var(--accent2); border: 1px solid rgba(0,217,245,0.3); }
+  .p2 .phase-title { color: var(--accent2); }
+  .p2 .card { border-color: rgba(0,217,245,0.15); }
+  .p2 .card:hover { border-color: rgba(0,217,245,0.4); }
+  .p2 .card::before { background: var(--accent2); }
+
+  .p3 .phase-dot { background: var(--accent3); }
+  .p3 .phase-num { background: rgba(245,0,217,0.1); color: var(--accent3); border: 1px solid rgba(245,0,217,0.3); }
+  .p3 .phase-title { color: var(--accent3); }
+  .p3 .card { border-color: rgba(245,0,217,0.15); }
+  .p3 .card:hover { border-color: rgba(245,0,217,0.4); }
+  .p3 .card::before { background: var(--accent3); }
+
+  .p4 .phase-dot { background: var(--accent4); }
+  .p4 .phase-num { background: rgba(245,160,0,0.1); color: var(--accent4); border: 1px solid rgba(245,160,0,0.3); }
+  .p4 .phase-title { color: var(--accent4); }
+  .p4 .card { border-color: rgba(245,160,0,0.15); }
+  .p4 .card:hover { border-color: rgba(245,160,0,0.4); }
+  .p4 .card::before { background: var(--accent4); }
+
+  .p5 .phase-dot { background: #c084fc; }
+  .p5 .phase-num { background: rgba(192,132,252,0.1); color: #c084fc; border: 1px solid rgba(192,132,252,0.3); }
+  .p5 .phase-title { color: #c084fc; }
+  .p5 .card { border-color: rgba(192,132,252,0.15); }
+  .p5 .card:hover { border-color: rgba(192,132,252,0.4); }
+  .p5 .card::before { background: #c084fc; }
+
+  /* Progress bar */
+  .progress-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    animation: fadeDown 1s ease 0.3s forwards;
+    opacity: 0;
+  }
+
+  .progress-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .progress-track {
+    flex: 1;
+    min-width: 200px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    width: 0%;
+    transition: width 1.5s ease 0.8s;
+  }
+
+  .progress-months {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .month-chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  /* Footer note */
+  .footer-note {
+    background: linear-gradient(135deg, rgba(0,245,160,0.05), rgba(0,217,245,0.05));
+    border: 1px solid rgba(0,245,160,0.2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+    animation: fadeUp 0.8s ease 1s forwards;
+    opacity: 0;
+  }
+
+  .footer-note strong {
+    color: var(--accent1);
+    font-family: 'Syne', sans-serif;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @media (max-width: 600px) {
+    .timeline { padding-left: 30px; }
+    .cards { grid-template-columns: 1fr; }
+    .phase-title { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="badge">// roadmap 2025–2026</div>
+    <h1>AI Engineering<br>Roadmap</h1>
+    <p>From Analytics Pro → AI Engineer in 12 months</p>
+  </div>
+
+  <div class="progress-bar">
+    <span class="progress-label">TOTAL JOURNEY</span>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-months">
+      <span class="month-chip">📍 Phase 1 · Month 1–2</span>
+      <span class="month-chip">⚡ Phase 2 · Month 3–4</span>
+      <span class="month-chip">🔥 Phase 3 · Month 5–7</span>
+      <span class="month-chip">🚀 Phase 4 · Month 8–10</span>
+      <span class="month-chip">🌐 Phase 5 · Month 11–12</span>
+    </div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Phase 1 -->
+    <div class="phase p1">
+      <div class="phase-header" onclick="toggle(this)">
+        <div class="phase-dot"></div>
+        <span class="phase-num">PHASE 01</span>
+        <span class="phase-title">Build the Foundation</span>
+        <span class="phase-duration">Month 1–2</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body">
+        <div class="cards">
+          <div class="card">
+            <span class="card-icon">🐍</span>
+            <div class="card-title">Python for AI</div>
+            <div class="card-desc">NumPy, Pandas, Matplotlib — advanced Python beyond analytics basics. OOP concepts, decorators, async.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">📐</span>
+            <div class="card-title">Math Essentials</div>
+            <div class="card-desc">Linear algebra, probability, statistics, calculus intuition. Focus on what matters for ML — not full degree math.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🧠</span>
+            <div class="card-title">ML Fundamentals</div>
+            <div class="card-desc">Supervised, unsupervised, reinforcement learning. Scikit-learn, model evaluation, overfitting concepts.</div>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">NumPy</span><span class="tag">Scikit-learn</span><span class="tag">Kaggle</span><span class="tag">fast.ai</span><span class="tag">3Blue1Brown</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase p2">
+      <div class="phase-header" onclick="toggle(this)">
+        <div class="phase-dot"></div>
+        <span class="phase-num">PHASE 02</span>
+        <span class="phase-title">Deep Learning & Neural Nets</span>
+        <span class="phase-duration">Month 3–4</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body">
+        <div class="cards">
+          <div class="card">
+            <span class="card-icon">⚡</span>
+            <div class="card-title">PyTorch / TensorFlow</div>
+            <div class="card-desc">Build NNs from scratch. Understand backprop, gradients, loss functions. PyTorch is preferred in industry today.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🏗️</span>
+            <div class="card-title">Model Architectures</div>
+            <div class="card-desc">CNNs, RNNs, LSTMs, and the attention mechanism. Understand why Transformers took over everything.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">☁️</span>
+            <div class="card-title">Cloud & GPU Basics</div>
+            <div class="card-desc">Google Colab, AWS SageMaker, or Azure ML. Learn to run training jobs without local GPU dependency.</div>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">PyTorch</span><span class="tag">HuggingFace</span><span class="tag">Google Colab</span><span class="tag">AWS</span><span class="tag">deeplearning.ai</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase p3">
+      <div class="phase-header" onclick="toggle(this)">
+        <div class="phase-dot"></div>
+        <span class="phase-num">PHASE 03</span>
+        <span class="phase-title">LLMs & Generative AI</span>
+        <span class="phase-duration">Month 5–7</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body">
+        <div class="cards">
+          <div class="card">
+            <span class="card-icon">💬</span>
+            <div class="card-title">LLM Engineering</div>
+            <div class="card-desc">OpenAI, Anthropic, Gemini APIs. Prompt engineering, chain-of-thought, few-shot learning patterns.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🔗</span>
+            <div class="card-title">RAG & Vector DBs</div>
+            <div class="card-desc">Retrieval-Augmented Generation, embeddings, Pinecone / ChromaDB / Weaviate. The backbone of most AI products.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🤖</span>
+            <div class="card-title">AI Agents & Tools</div>
+            <div class="card-desc">LangChain, LlamaIndex, AutoGen. Build agents that use tools, memory, and multi-step reasoning.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🎯</span>
+            <div class="card-title">Fine-Tuning</div>
+            <div class="card-desc">LoRA, PEFT, QLoRA — fine-tune open-source LLMs (Llama, Mistral) for specific business domains.</div>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">LangChain</span><span class="tag">LlamaIndex</span><span class="tag">Pinecone</span><span class="tag">OpenAI API</span><span class="tag">Llama 3</span><span class="tag">LoRA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase p4">
+      <div class="phase-header" onclick="toggle(this)">
+        <div class="phase-dot"></div>
+        <span class="phase-num">PHASE 04</span>
+        <span class="phase-title">MLOps & Production AI</span>
+        <span class="phase-duration">Month 8–10</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body">
+        <div class="cards">
+          <div class="card">
+            <span class="card-icon">🐳</span>
+            <div class="card-title">Containerization</div>
+            <div class="card-desc">Docker, Kubernetes basics. Package and deploy models as APIs — the gap most analysts miss completely.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🔁</span>
+            <div class="card-title">ML Pipelines</div>
+            <div class="card-desc">MLflow, Airflow, Prefect. Version models, track experiments, automate retraining pipelines.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">📊</span>
+            <div class="card-title">Model Monitoring</div>
+            <div class="card-desc">Data drift, model degradation, Evidently AI, Grafana. Keep models healthy in production — critical for real jobs.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">⚙️</span>
+            <div class="card-title">API Development</div>
+            <div class="card-desc">FastAPI, Flask. Serve your models. Build endpoints that engineering teams can actually integrate.</div>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">Docker</span><span class="tag">MLflow</span><span class="tag">FastAPI</span><span class="tag">Airflow</span><span class="tag">GCP / AWS</span><span class="tag">CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase p5">
+      <div class="phase-header" onclick="toggle(this)">
+        <div class="phase-dot"></div>
+        <span class="phase-num">PHASE 05</span>
+        <span class="phase-title">Specialize & Go Global</span>
+        <span class="phase-duration">Month 11–12</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body">
+        <div class="cards">
+          <div class="card">
+            <span class="card-icon">🎨</span>
+            <div class="card-title">Pick Your Domain</div>
+            <div class="card-desc">Marketing AI, NLP/Search, Computer Vision, or Decision Intelligence. Depth beats breadth at senior levels.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🏆</span>
+            <div class="card-title">Portfolio Projects</div>
+            <div class="card-desc">3 production-quality projects on GitHub. Not Jupyter notebooks — real deployed apps with proper docs.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">📝</span>
+            <div class="card-title">Write & Publish</div>
+            <div class="card-desc">LinkedIn articles, Medium, Substack. Document your learning. Companies hire people they've already read.</div>
+          </div>
+          <div class="card">
+            <span class="card-icon">🌏</span>
+            <div class="card-title">Target Global Roles</div>
+            <div class="card-desc">EU AI Act expertise, international certifications (AWS ML, GCP Professional ML). Tailor for Bangalore → abroad pipeline.</div>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">GitHub Portfolio</span><span class="tag">AWS ML Cert</span><span class="tag">GCP ML Cert</span><span class="tag">LinkedIn</span><span class="tag">Open Source</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <strong>💡 Your Analytics Edge:</strong> You already understand business context, stakeholder communication, and data storytelling — things pure engineers struggle with. Layer AI engineering on top of that, and you're not competing with AI engineers. You're in a category of one.<br><br>
+    <strong>Start today:</strong> Python advanced → fast.ai course → build one LLM app → deploy it → write about it on LinkedIn.
+  </div>
+
+</div>
+
+<script>
+  // Animate progress bar
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('progressFill').style.width = '100%';
+    }, 300);
+  });
+
+  // Toggle phases
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    body.classList.toggle('collapsed');
+    icon.classList.toggle('rotated');
+  }
+</script>
+</body>
+</html>
