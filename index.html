@@ -3,677 +3,2469 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Engineering Roadmap</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Zero to AI Engineer — Beginner Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #12121a;
-    --card: #1a1a26;
-    --accent1: #00f5a0;
-    --accent2: #00d9f5;
-    --accent3: #f500d9;
-    --accent4: #f5a000;
-    --text: #e8e8f0;
-    --muted: #6b6b8a;
-    --border: #2a2a3a;
-  }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ─── TOKENS ─────────────────────────────── */
+:root {
+  --white:   #ffffff;
+  --off:     #faf9f7;
+  --soft:    #f2f0ec;
+  --line:    #e5e2db;
+  --muted:   #9b968c;
+  --body:    #3d3a35;
+  --dark:    #1c1916;
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  --p0: #7c5cbf;   /* violet  */
+  --p1: #2872d4;   /* blue    */
+  --p2: #c47f17;   /* amber   */
+  --p3: #d44d28;   /* orange  */
+  --p4: #1f9e6e;   /* green   */
+  --p5: #c4293a;   /* red     */
+  --p6: #1a92b4;   /* teal    */
 
-  /* Background grid */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(0,245,160,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,245,160,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+  --serif: 'Lora', Georgia, serif;
+  --sans:  'Plus Jakarta Sans', sans-serif;
+  --mono:  'Fira Code', monospace;
 
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 60px 24px;
-    position: relative;
-    z-index: 1;
-  }
+  --radius: 12px;
+  --shadow: 0 2px 16px rgba(0,0,0,0.07);
+}
 
-  /* Header */
-  .header {
-    text-align: center;
-    margin-bottom: 70px;
-    animation: fadeDown 0.8s ease forwards;
-  }
+/* ─── RESET ──────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--sans);
+  background: var(--off);
+  color: var(--body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-  .header .badge {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--accent1);
-    border: 1px solid var(--accent1);
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
+/* ─── STICKY NAV ─────────────────────────── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  padding: 0 48px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
 
-  .header h1 {
-    font-size: clamp(36px, 6vw, 72px);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -2px;
-    background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent3) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 16px;
-  }
+.topbar-logo {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+  white-space: nowrap;
+}
 
-  .header p {
-    color: var(--muted);
-    font-size: 16px;
-    font-family: 'Space Mono', monospace;
-  }
+.topbar-logo span { color: var(--p3); font-style: italic; }
 
-  /* Timeline */
-  .timeline {
-    position: relative;
-    padding-left: 40px;
-  }
+.topbar-phases {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  overflow-x: auto;
+}
 
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 16px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--accent1), var(--accent2), var(--accent3), var(--accent4));
-  }
+.topbar-phases li a {
+  display: block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: background 0.18s, color 0.18s;
+}
 
-  /* Phase */
-  .phase {
-    margin-bottom: 50px;
-    opacity: 0;
-    transform: translateX(-20px);
-    animation: slideIn 0.6s ease forwards;
-  }
+.topbar-phases li a:hover { background: var(--soft); color: var(--dark); }
 
-  .phase:nth-child(1) { animation-delay: 0.1s; }
-  .phase:nth-child(2) { animation-delay: 0.25s; }
-  .phase:nth-child(3) { animation-delay: 0.4s; }
-  .phase:nth-child(4) { animation-delay: 0.55s; }
-  .phase:nth-child(5) { animation-delay: 0.7s; }
-  .phase:nth-child(6) { animation-delay: 0.85s; }
+.pdf-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: var(--dark);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--sans);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s, transform 0.18s;
+  flex-shrink: 0;
+}
+.pdf-btn:hover { background: var(--p3); transform: translateY(-1px); }
 
-  .phase-dot {
-    position: absolute;
-    left: -32px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 2px solid var(--bg);
-    margin-top: 6px;
-  }
+/* ─── HERO ───────────────────────────────── */
+.hero {
+  background: var(--dark);
+  padding: 80px 48px 72px;
+  position: relative;
+  overflow: hidden;
+}
 
-  .phase-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-  }
+/* subtle diagonal stripe texture */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,0.015) 40px,
+    rgba(255,255,255,0.015) 41px
+  );
+  pointer-events: none;
+}
 
-  .phase-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 4px;
-    letter-spacing: 1px;
-  }
+.hero-inner {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+}
 
-  .phase-title {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    flex: 1;
-  }
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--p3);
+  margin-bottom: 28px;
+}
 
-  .phase-duration {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    white-space: nowrap;
-  }
+.hero-label::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1px;
+  background: var(--p3);
+}
 
-  .toggle-icon {
-    font-size: 18px;
-    color: var(--muted);
-    transition: transform 0.3s ease;
-    min-width: 20px;
-    text-align: center;
-  }
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(40px, 6vw, 82px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
 
-  .phase-body {
-    overflow: hidden;
-    transition: max-height 0.4s ease, opacity 0.4s ease;
-    max-height: 1000px;
-    opacity: 1;
-  }
+.hero h1 em {
+  font-style: italic;
+  color: var(--p3);
+}
 
-  .phase-body.collapsed {
-    max-height: 0;
-    opacity: 0;
-  }
+.hero-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.48);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 48px;
+  font-weight: 300;
+}
 
-  .toggle-icon.rotated {
-    transform: rotate(-90deg);
-  }
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 52px;
+}
 
-  /* Cards grid */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 14px;
-    margin-bottom: 16px;
-  }
+.hero-pill {
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+}
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-    transition: border-color 0.2s, transform 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
+.hero-pill.hi { background: rgba(212,77,40,0.18); border-color: rgba(212,77,40,0.35); color: #f3855d; }
 
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+.hero-numbers {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
 
-  .card:hover {
-    transform: translateY(-2px);
-  }
+.hero-num-item {}
+.hero-num-val {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-style: italic;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.hero-num-val b { color: var(--p3); font-style: normal; }
+.hero-num-lab {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
 
-  .card:hover::before { opacity: 1; }
+/* ─── MYTH SECTION ───────────────────────── */
+.myths-section {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  padding: 64px 48px;
+}
 
-  .card-icon {
-    font-size: 22px;
-    margin-bottom: 10px;
-    display: block;
-  }
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-eyebrow::after { content:''; flex:1; height:1px; background:var(--line); }
 
-  .card-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.2px;
-  }
+.section-heading {
+  font-family: var(--serif);
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 36px;
+}
+.section-heading em { font-style: italic; color: var(--p3); }
 
-  .card-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-    font-family: 'Space Mono', monospace;
-  }
+.myths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+}
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 16px;
-  }
+.myth-card {
+  background: var(--off);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  transition: box-shadow 0.2s;
+}
 
-  .tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
+.myth-card:hover { box-shadow: var(--shadow); }
 
-  /* Phase colors */
-  .p1 .phase-dot { background: var(--accent1); }
-  .p1 .phase-num { background: rgba(0,245,160,0.1); color: var(--accent1); border: 1px solid rgba(0,245,160,0.3); }
-  .p1 .phase-title { color: var(--accent1); }
-  .p1 .card { border-color: rgba(0,245,160,0.15); }
-  .p1 .card:hover { border-color: rgba(0,245,160,0.4); }
-  .p1 .card::before { background: var(--accent1); }
+.myth-strike {
+  font-size: 13px;
+  color: #c4293a;
+  text-decoration: line-through;
+  opacity: 0.65;
+  margin-bottom: 10px;
+  font-family: var(--mono);
+}
 
-  .p2 .phase-dot { background: var(--accent2); }
-  .p2 .phase-num { background: rgba(0,217,245,0.1); color: var(--accent2); border: 1px solid rgba(0,217,245,0.3); }
-  .p2 .phase-title { color: var(--accent2); }
-  .p2 .card { border-color: rgba(0,217,245,0.15); }
-  .p2 .card:hover { border-color: rgba(0,217,245,0.4); }
-  .p2 .card::before { background: var(--accent2); }
+.myth-truth {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  line-height: 1.55;
+}
 
-  .p3 .phase-dot { background: var(--accent3); }
-  .p3 .phase-num { background: rgba(245,0,217,0.1); color: var(--accent3); border: 1px solid rgba(245,0,217,0.3); }
-  .p3 .phase-title { color: var(--accent3); }
-  .p3 .card { border-color: rgba(245,0,217,0.15); }
-  .p3 .card:hover { border-color: rgba(245,0,217,0.4); }
-  .p3 .card::before { background: var(--accent3); }
+.myth-truth::before {
+  content: '✓ ';
+  color: var(--p4);
+}
 
-  .p4 .phase-dot { background: var(--accent4); }
-  .p4 .phase-num { background: rgba(245,160,0,0.1); color: var(--accent4); border: 1px solid rgba(245,160,0,0.3); }
-  .p4 .phase-title { color: var(--accent4); }
-  .p4 .card { border-color: rgba(245,160,0,0.15); }
-  .p4 .card:hover { border-color: rgba(245,160,0,0.4); }
-  .p4 .card::before { background: var(--accent4); }
+/* ─── JOURNEY OVERVIEW ───────────────────── */
+.journey-overview {
+  background: var(--soft);
+  border-bottom: 1px solid var(--line);
+  padding: 64px 48px;
+}
 
-  .p5 .phase-dot { background: #c084fc; }
-  .p5 .phase-num { background: rgba(192,132,252,0.1); color: #c084fc; border: 1px solid rgba(192,132,252,0.3); }
-  .p5 .phase-title { color: #c084fc; }
-  .p5 .card { border-color: rgba(192,132,252,0.15); }
-  .p5 .card:hover { border-color: rgba(192,132,252,0.4); }
-  .p5 .card::before { background: #c084fc; }
+.phase-cards-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-top: 36px;
+}
 
-  /* Progress bar */
-  .progress-bar {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin-bottom: 50px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    animation: fadeDown 1s ease 0.3s forwards;
-    opacity: 0;
-  }
+.pcard {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  display: block;
+}
 
-  .progress-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    white-space: nowrap;
-  }
+.pcard:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 
-  .progress-track {
-    flex: 1;
-    min-width: 200px;
-    height: 6px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-  }
+.pcard-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
 
-  .progress-fill {
-    height: 100%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
-    width: 0%;
-    transition: width 1.5s ease 0.8s;
-  }
+.pcard-num {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
 
-  .progress-months {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
+.pcard-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
 
-  .month-chip {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    white-space: nowrap;
-  }
+.pcard-time {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+}
 
-  /* Footer note */
-  .footer-note {
-    background: linear-gradient(135deg, rgba(0,245,160,0.05), rgba(0,217,245,0.05));
-    border: 1px solid rgba(0,245,160,0.2);
-    border-radius: 12px;
-    padding: 24px;
-    margin-top: 20px;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.8;
-    animation: fadeUp 0.8s ease 1s forwards;
-    opacity: 0;
-  }
+/* ─── MAIN ROADMAP ───────────────────────── */
+.roadmap-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px 80px;
+}
 
-  .footer-note strong {
-    color: var(--accent1);
-    font-family: 'Syne', sans-serif;
-  }
+/* ─── PHASE SECTION ──────────────────────── */
+.phase-section {
+  padding: 72px 0 60px;
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
 
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.phase-section.show { opacity: 1; transform: translateY(0); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* Phase header band */
+.phase-header-band {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
 
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
+.phase-number-block {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 
-  @media (max-width: 600px) {
-    .timeline { padding-left: 30px; }
-    .cards { grid-template-columns: 1fr; }
-    .phase-title { font-size: 18px; }
-  }
+.phase-number-block .pn-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.65;
+  color: #fff;
+}
+
+.phase-number-block .pn-num {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.phase-header-text { flex: 1; }
+
+.phase-title {
+  font-family: var(--serif);
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.phase-title em { font-style: italic; }
+
+.phase-subtitle {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 560px;
+  margin-bottom: 14px;
+}
+
+.phase-meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  color: var(--body);
+}
+
+.meta-chip span { font-size: 14px; }
+
+/* ─── TOPIC GRID ─────────────────────────── */
+.block-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.block-label::after { content:''; flex:1; height:1px; background:var(--line); }
+
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.topic-tile {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.topic-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+}
+
+.topic-tile-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.topic-emoji { font-size: 22px; line-height: 1; }
+
+.topic-tile-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.3;
+}
+
+.topic-tile-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+
+.topic-tile-why {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  font-weight: 500;
+}
+
+/* ─── RESOURCES ──────────────────────────── */
+.res-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+
+.res-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  color: var(--body);
+  cursor: default;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.res-chip:hover { background: var(--soft); }
+
+.res-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.rb-free  { background: rgba(31,158,110,0.12); color: var(--p4); }
+.rb-paid  { background: rgba(212,77,40,0.1);   color: var(--p3); }
+.rb-yt    { background: rgba(196,41,58,0.1);   color: var(--p5); }
+.rb-book  { background: rgba(124,92,191,0.1);  color: var(--p0); }
+.rb-tool  { background: rgba(40,114,212,0.1);  color: var(--p1); }
+.rb-cert  { background: rgba(196,127,23,0.1);  color: var(--p2); }
+
+/* ─── PROJECT BOX ────────────────────────── */
+.project-card {
+  border-radius: var(--radius);
+  padding: 28px 28px 28px 32px;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+}
+
+.proj-num {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-style: italic;
+  line-height: 1;
+  opacity: 0.18;
+  padding-top: 2px;
+}
+
+.proj-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.proj-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.proj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.proj-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+/* ─── CHECKLIST ──────────────────────────── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cl-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  font-size: 13px;
+  color: var(--dark);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.cl-item:hover { background: var(--soft); }
+
+.cl-item.checked {
+  background: rgba(31,158,110,0.05);
+  border-color: rgba(31,158,110,0.3);
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--p4);
+}
+
+.cl-box {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.cl-item.checked .cl-box {
+  background: var(--p4);
+  border-color: var(--p4);
+  color: #fff;
+}
+
+/* ─── PHASE COLOR OVERRIDES ──────────────── */
+/* P0 violet */
+.p0 .phase-number-block { background: var(--p0); }
+.p0 .topic-tile:hover { border-color: var(--p0); }
+.p0 .topic-tile-why { background: rgba(124,92,191,0.08); color: var(--p0); }
+.p0 .project-card { background: rgba(124,92,191,0.05); }
+.p0 .project-card::before { background: var(--p0); }
+.p0 .proj-num { color: var(--p0); }
+.p0 .proj-tag { background: rgba(124,92,191,0.1); color: var(--p0); }
+
+/* P1 blue */
+.p1 .phase-number-block { background: var(--p1); }
+.p1 .topic-tile:hover { border-color: var(--p1); }
+.p1 .topic-tile-why { background: rgba(40,114,212,0.08); color: var(--p1); }
+.p1 .project-card { background: rgba(40,114,212,0.05); }
+.p1 .project-card::before { background: var(--p1); }
+.p1 .proj-num { color: var(--p1); }
+.p1 .proj-tag { background: rgba(40,114,212,0.1); color: var(--p1); }
+
+/* P2 amber */
+.p2 .phase-number-block { background: var(--p2); }
+.p2 .topic-tile:hover { border-color: var(--p2); }
+.p2 .topic-tile-why { background: rgba(196,127,23,0.08); color: var(--p2); }
+.p2 .project-card { background: rgba(196,127,23,0.05); }
+.p2 .project-card::before { background: var(--p2); }
+.p2 .proj-num { color: var(--p2); }
+.p2 .proj-tag { background: rgba(196,127,23,0.1); color: var(--p2); }
+
+/* P3 orange */
+.p3 .phase-number-block { background: var(--p3); }
+.p3 .topic-tile:hover { border-color: var(--p3); }
+.p3 .topic-tile-why { background: rgba(212,77,40,0.08); color: var(--p3); }
+.p3 .project-card { background: rgba(212,77,40,0.05); }
+.p3 .project-card::before { background: var(--p3); }
+.p3 .proj-num { color: var(--p3); }
+.p3 .proj-tag { background: rgba(212,77,40,0.1); color: var(--p3); }
+
+/* P4 green */
+.p4 .phase-number-block { background: var(--p4); }
+.p4 .topic-tile:hover { border-color: var(--p4); }
+.p4 .topic-tile-why { background: rgba(31,158,110,0.08); color: var(--p4); }
+.p4 .project-card { background: rgba(31,158,110,0.05); }
+.p4 .project-card::before { background: var(--p4); }
+.p4 .proj-num { color: var(--p4); }
+.p4 .proj-tag { background: rgba(31,158,110,0.1); color: var(--p4); }
+
+/* P5 red */
+.p5 .phase-number-block { background: var(--p5); }
+.p5 .topic-tile:hover { border-color: var(--p5); }
+.p5 .topic-tile-why { background: rgba(196,41,58,0.08); color: var(--p5); }
+.p5 .project-card { background: rgba(196,41,58,0.05); }
+.p5 .project-card::before { background: var(--p5); }
+.p5 .proj-num { color: var(--p5); }
+.p5 .proj-tag { background: rgba(196,41,58,0.1); color: var(--p5); }
+
+/* P6 teal */
+.p6 .phase-number-block { background: var(--p6); }
+.p6 .topic-tile:hover { border-color: var(--p6); }
+.p6 .topic-tile-why { background: rgba(26,146,180,0.08); color: var(--p6); }
+.p6 .project-card { background: rgba(26,146,180,0.05); }
+.p6 .project-card::before { background: var(--p6); }
+.p6 .proj-num { color: var(--p6); }
+.p6 .proj-tag { background: rgba(26,146,180,0.1); color: var(--p6); }
+
+/* ─── SALARY BAR ─────────────────────────── */
+.salary-section {
+  background: var(--dark);
+  padding: 64px 48px;
+}
+
+.salary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 36px;
+}
+
+.salary-tile {
+  background: var(--dark);
+  padding: 36px 32px;
+  text-align: center;
+}
+
+.salary-level {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 14px;
+}
+
+.salary-val {
+  font-family: var(--serif);
+  font-size: 46px;
+  font-style: italic;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.salary-val em { color: var(--p3); font-style: normal; }
+
+.salary-note {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ─── FOOTER ─────────────────────────────── */
+.site-footer {
+  background: var(--soft);
+  border-top: 1px solid var(--line);
+  padding: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--dark);
+}
+
+.footer-note {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 440px;
+}
+
+.footer-credit {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ─── PRINT ──────────────────────────────── */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .topbar, .pdf-btn { display: none !important; }
+  .hero { padding: 40px 32px; }
+  .phase-section { opacity: 1 !important; transform: none !important; page-break-inside: avoid; }
+  .roadmap-body { padding: 0 32px 40px; }
+  .myths-section, .journey-overview { padding: 40px 32px; }
+  .salary-section { padding: 40px 32px; }
+}
+
+/* ─── RESPONSIVE ─────────────────────────── */
+@media (max-width: 960px) {
+  .topbar { padding: 0 24px; }
+  .topbar-phases { display: none; }
+  .hero { padding: 60px 24px 52px; }
+  .myths-section, .journey-overview, .salary-section, .site-footer { padding: 48px 24px; }
+  .roadmap-body { padding: 0 24px 60px; }
+  .phase-cards-row { grid-template-columns: repeat(4, 1fr); }
+  .salary-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .hero h1 { font-size: 38px; }
+  .phase-cards-row { grid-template-columns: repeat(2, 1fr); }
+  .topic-grid { grid-template-columns: 1fr; }
+  .hero-numbers { gap: 28px; }
+  .phase-header-band { gap: 18px; }
+  .project-card { grid-template-columns: 1fr; }
+  .proj-num { font-size: 32px; }
+}
+
+/* ─── RESOURCE CARDS (rich link cards) ──── */
+.res-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.res-card {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.res-card:hover {
+  border-color: var(--p1);
+  box-shadow: 0 4px 16px rgba(40,114,212,0.1);
+  transform: translateY(-2px);
+}
+
+.res-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.res-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  flex: 1;
+}
+
+.res-card-meta {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.res-card-url {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--p1);
+  word-break: break-all;
+  margin-top: 2px;
+}
+
+.res-card-stars {
+  font-size: 11px;
+  color: var(--p2);
+  margin-top: 2px;
+}
+
+/* ─── COMMAND BLOCKS ─────────────────────── */
+.cmd-block {
+  background: #1c1916;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+}
+
+.cmd-block-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 12px;
+}
+
+.cmd-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.cmd-line:last-child { margin-bottom: 0; }
+
+.cmd-prompt {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--p4);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cmd-code {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: #f0ebe3;
+}
+
+.cmd-comment {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  margin-left: 4px;
+}
+
+/* ─── TOOL SETUP TABLE ───────────────────── */
+.tool-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 36px;
+  font-size: 13px;
+}
+
+.tool-table th {
+  background: var(--soft);
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.tool-table td {
+  padding: 13px 16px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.tool-table tr:hover td { background: var(--off); }
+
+.tool-name {
+  font-weight: 700;
+  color: var(--dark);
+  white-space: nowrap;
+}
+
+.tool-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--p1);
+  display: block;
+  margin-top: 2px;
+  word-break: break-all;
+}
+
+/* ─── SECTION DIVIDER ────────────────────── */
+.sub-section {
+  margin-bottom: 36px;
+}
+
+/* ─── BEGINNER vs ADVANCED TABS ─────────── */
+.level-tabs {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.level-tab {
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff;
+  color: var(--muted);
+  border: none;
+  font-family: var(--sans);
+  transition: background 0.15s, color 0.15s;
+}
+
+.level-tab.active {
+  background: var(--dark);
+  color: #fff;
+}
+
+.level-pane { display: none; }
+.level-pane.active { display: block; }
+
+/* ─── ML TAXONOMY TABLE ──────────────────── */
+.ml-taxonomy {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.ml-category {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.ml-cat-header {
+  padding: 14px 16px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ml-cat-body {
+  padding: 12px 16px 16px;
+}
+
+.ml-algo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+}
+
+.ml-algo:last-child { border-bottom: none; }
+
+.ml-algo-name {
+  font-weight: 600;
+  color: var(--dark);
+  flex: 1;
+}
+
+.ml-algo-use {
+  font-size: 11px;
+  color: var(--muted);
+  flex: 1.2;
+}
+
+/* ─── AI TYPE CARDS ──────────────────────── */
+.ai-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.ai-type-card {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.ai-type-icon { font-size: 26px; margin-bottom: 10px; }
+.ai-type-name { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
+.ai-type-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.ai-type-eg   { font-size: 11px; font-family: var(--mono); color: var(--p3); margin-top: 7px; }
+
+/* ─── LIFECYCLE STEPS ────────────────────── */
+.lifecycle-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 36px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.lc-step {
+  flex: 1;
+  min-width: 110px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-right: none;
+  padding: 16px 14px;
+  position: relative;
+}
+
+.lc-step:last-child { border-right: 1.5px solid var(--line); border-radius: 0 var(--radius) var(--radius) 0; }
+.lc-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+
+.lc-num {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.lc-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.lc-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.lc-arrow {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: var(--p3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 10px;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.lc-step:last-child .lc-arrow { display: none; }
+
+@media (max-width: 768px) {
+  .ml-taxonomy { grid-template-columns: 1fr; }
+  .tool-table { font-size: 12px; }
+  .cmd-code { font-size: 11px; }
+}
+
 </style>
 </head>
 <body>
-<div class="container">
 
-  <div class="header">
-    <div class="badge">// roadmap 2025–2026</div>
-    <h1>AI Engineering<br>Roadmap</h1>
-    <p>From Analytics Pro → AI Engineer in 12 months</p>
+<!-- ═══════════════════════════════════════
+     TOP NAV
+═══════════════════════════════════════ -->
+<header class="topbar">
+  <div class="topbar-logo">Zero to <span>AI Engineer</span></div>
+  <ul class="topbar-phases">
+    <li><a href="#p0">0 · Setup</a></li>
+    <li><a href="#p1">1 · Python</a></li>
+    <li><a href="#p2">2 · Stats</a></li>
+    <li><a href="#p3">3 · ML</a></li>
+    <li><a href="#p4">4 · Deep Learning</a></li>
+    <li><a href="#p5">5 · Deploy</a></li>
+    <li><a href="#p6">6 · Get Hired</a></li>
+  </ul>
+  <button class="pdf-btn" onclick="savePDF()">↓ Save PDF</button>
+</header>
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Complete beginner roadmap · No prior experience needed</div>
+    <h1>Zero to<br><em>AI Engineer</em></h1>
+    <p class="hero-sub">
+      A clear, honest, step-by-step guide — whether you're a student, a career switcher, or someone with zero tech background. No gatekeeping. No shortcuts. Just the real path.
+    </p>
+
+    <div class="hero-pills">
+      <span class="hero-pill hi">✦ Works for everyone</span>
+      <span class="hero-pill">Students &amp; Freshers</span>
+      <span class="hero-pill">Career Switchers</span>
+      <span class="hero-pill">Finance / Marketing / HR</span>
+      <span class="hero-pill">Developers</span>
+      <span class="hero-pill">Non-Tech Backgrounds</span>
+    </div>
+
+    <div class="hero-numbers">
+      <div class="hero-num-item">
+        <div class="hero-num-val">7 <b>phases</b></div>
+        <div class="hero-num-lab">Zero to job-ready</div>
+      </div>
+      <div class="hero-num-item">
+        <div class="hero-num-val">12–18 <b>months</b></div>
+        <div class="hero-num-lab">Realistic timeline</div>
+      </div>
+      <div class="hero-num-item">
+        <div class="hero-num-val">40<b>+</b></div>
+        <div class="hero-num-lab">Free resources</div>
+      </div>
+      <div class="hero-num-item">
+        <div class="hero-num-val">5 <b>projects</b></div>
+        <div class="hero-num-lab">Portfolio builders</div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="progress-bar">
-    <span class="progress-label">TOTAL JOURNEY</span>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
+<!-- ═══════════════════════════════════════
+     MYTHS
+═══════════════════════════════════════ -->
+<section class="myths-section">
+  <div class="section-eyebrow">Before you start</div>
+  <h2 class="section-heading">Let's clear the myths <em>holding you back</em></h2>
+  <div class="myths-grid">
+    <div class="myth-card">
+      <div class="myth-strike">"You need a Computer Science degree"</div>
+      <div class="myth-truth">Many top AI engineers come from physics, economics, even arts. Curiosity beats credentials every time.</div>
     </div>
-    <div class="progress-months">
-      <span class="month-chip">🧮 Phase 0 · Pre-Start</span>
-      <span class="month-chip">📍 Phase 1 · Month 1–2</span>
-      <span class="month-chip">⚡ Phase 2 · Month 3–4</span>
-      <span class="month-chip">🔥 Phase 3 · Month 5–7</span>
-      <span class="month-chip">🚀 Phase 4 · Month 8–10</span>
-      <span class="month-chip">🌐 Phase 5 · Month 11–12</span>
+    <div class="myth-card">
+      <div class="myth-strike">"You need to be a math genius"</div>
+      <div class="myth-truth">High school algebra + willingness to learn is enough to start. Tools handle the heavy lifting.</div>
+    </div>
+    <div class="myth-card">
+      <div class="myth-strike">"It takes 5+ years to break in"</div>
+      <div class="myth-truth">A focused 12–18 months is enough for a first AI role. Depth comes naturally on the job.</div>
+    </div>
+    <div class="myth-card">
+      <div class="myth-strike">"AI will replace this career too"</div>
+      <div class="myth-truth">AI Engineers build the AI. You're on the building side — the most secure side to be on.</div>
+    </div>
+    <div class="myth-card">
+      <div class="myth-strike">"You need expensive bootcamps"</div>
+      <div class="myth-truth">90% of what you need is free — YouTube, Kaggle, HuggingFace, official docs. Invest time, not money.</div>
+    </div>
+    <div class="myth-card">
+      <div class="myth-strike">"Non-tech people can't do this"</div>
+      <div class="myth-truth">Finance, healthcare, legal — domain expertise is a rare superpower most pure engineers lack.</div>
     </div>
   </div>
+</section>
 
-  <div class="timeline">
-
-    <!-- Phase 0 -->
-    <div class="phase p0">
-      <div class="phase-header" onclick="toggle(this)">
-        <div class="phase-dot" style="background: #a78bfa;"></div>
-        <span class="phase-num" style="background: rgba(167,139,250,0.15); color: #a78bfa;">PHASE 00</span>
-        <span class="phase-title" style="color: #a78bfa;">Statistics & Math Foundations</span>
-        <span class="phase-duration">Pre-Start (Ongoing)</span>
-        <span class="toggle-icon">▾</span>
-      </div>
-      <div class="phase-body">
-        <div class="cards">
-          <div class="card" style="border-color: rgba(167,139,250,0.3);">
-            <span class="card-icon">📊</span>
-            <div class="card-title">Descriptive Statistics</div>
-            <div class="card-desc">Mean, median, mode, variance, standard deviation, percentiles, skewness, kurtosis. The language every dataset speaks — you already use this daily.</div>
-          </div>
-          <div class="card" style="border-color: rgba(167,139,250,0.3);">
-            <span class="card-icon">🎲</span>
-            <div class="card-title">Probability Theory</div>
-            <div class="card-desc">Probability distributions (Normal, Binomial, Poisson), Bayes' theorem, conditional probability, expected value. The math behind every ML model's uncertainty.</div>
-          </div>
-          <div class="card" style="border-color: rgba(167,139,250,0.3);">
-            <span class="card-icon">🧪</span>
-            <div class="card-title">Inferential Statistics</div>
-            <div class="card-desc">Hypothesis testing, p-values, confidence intervals, t-tests, chi-square, ANOVA. You're already doing this in A/B testing — now formalize it deeply.</div>
-          </div>
-          <div class="card" style="border-color: rgba(167,139,250,0.3);">
-            <span class="card-icon">📐</span>
-            <div class="card-title">Linear Algebra</div>
-            <div class="card-desc">Vectors, matrices, dot products, eigenvalues, SVD. Neural networks are literally matrix multiplications — this unlocks everything in deep learning.</div>
-          </div>
-          <div class="card" style="border-color: rgba(167,139,250,0.3);">
-            <span class="card-icon">📈</span>
-            <div class="card-title">Calculus & Optimization</div>
-            <div class="card-desc">Derivatives, partial derivatives, gradients, chain rule. Gradient descent — the algorithm that trains every neural network — is pure calculus.</div>
-          </div>
-          <div class="card" style="border-color: rgba(167,139,250,0.3);">
-            <span class="card-icon">🔁</span>
-            <div class="card-title">Regression & Correlation</div>
-            <div class="card-desc">Linear & logistic regression, R², correlation vs causation, multicollinearity. The statistical backbone of supervised ML — master it before touching scikit-learn.</div>
-          </div>
-        </div>
-        <div class="tags">
-          <span class="tag" style="border-color: rgba(167,139,250,0.4); color: #a78bfa;">Khan Academy Stats</span>
-          <span class="tag" style="border-color: rgba(167,139,250,0.4); color: #a78bfa;">StatQuest (YouTube)</span>
-          <span class="tag" style="border-color: rgba(167,139,250,0.4); color: #a78bfa;">3Blue1Brown Linear Algebra</span>
-          <span class="tag" style="border-color: rgba(167,139,250,0.4); color: #a78bfa;">Think Stats (book)</span>
-          <span class="tag" style="border-color: rgba(167,139,250,0.4); color: #a78bfa;">SciPy / StatsModels</span>
-        </div>
-        <div style="margin-top: 14px; padding: 12px 16px; background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius: 8px; font-size: 12px; color: #a78bfa; font-family: 'Space Mono', monospace;">
-          ⚡ Your edge: You've been applying statistics in A/B testing and anomaly detection for years. This phase is about formalising that intuition — not starting from zero.
-        </div>
-      </div>
-    </div>
-
-    <!-- Phase 1 -->
-    <div class="phase p1">
-      <div class="phase-header" onclick="toggle(this)">
-        <div class="phase-dot"></div>
-        <span class="phase-num">PHASE 01</span>
-        <span class="phase-title">Build the Foundation</span>
-        <span class="phase-duration">Month 1–2</span>
-        <span class="toggle-icon">▾</span>
-      </div>
-      <div class="phase-body">
-        <div class="cards">
-          <div class="card">
-            <span class="card-icon">🐍</span>
-            <div class="card-title">Python for AI</div>
-            <div class="card-desc">NumPy, Pandas, Matplotlib — advanced Python beyond analytics basics. OOP concepts, decorators, async.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🗂️</span>
-            <div class="card-title">Data Structures & Algorithms</div>
-            <div class="card-desc">Arrays, dicts, trees, graphs, Big-O notation. Essential for writing efficient data pipelines and understanding ML algorithm complexity.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🧠</span>
-            <div class="card-title">ML Fundamentals</div>
-            <div class="card-desc">Supervised, unsupervised, reinforcement learning. Scikit-learn, model evaluation, overfitting concepts.</div>
-          </div>
-        </div>
-        <div class="tags">
-          <span class="tag">Python</span><span class="tag">NumPy</span><span class="tag">Scikit-learn</span><span class="tag">Kaggle</span><span class="tag">fast.ai</span><span class="tag">3Blue1Brown</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Phase 2 -->
-    <div class="phase p2">
-      <div class="phase-header" onclick="toggle(this)">
-        <div class="phase-dot"></div>
-        <span class="phase-num">PHASE 02</span>
-        <span class="phase-title">Deep Learning & Neural Nets</span>
-        <span class="phase-duration">Month 3–4</span>
-        <span class="toggle-icon">▾</span>
-      </div>
-      <div class="phase-body">
-        <div class="cards">
-          <div class="card">
-            <span class="card-icon">⚡</span>
-            <div class="card-title">PyTorch / TensorFlow</div>
-            <div class="card-desc">Build NNs from scratch. Understand backprop, gradients, loss functions. PyTorch is preferred in industry today.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🏗️</span>
-            <div class="card-title">Model Architectures</div>
-            <div class="card-desc">CNNs, RNNs, LSTMs, and the attention mechanism. Understand why Transformers took over everything.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">☁️</span>
-            <div class="card-title">Cloud & GPU Basics</div>
-            <div class="card-desc">Google Colab, AWS SageMaker, or Azure ML. Learn to run training jobs without local GPU dependency.</div>
-          </div>
-        </div>
-        <div class="tags">
-          <span class="tag">PyTorch</span><span class="tag">HuggingFace</span><span class="tag">Google Colab</span><span class="tag">AWS</span><span class="tag">deeplearning.ai</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Phase 3 -->
-    <div class="phase p3">
-      <div class="phase-header" onclick="toggle(this)">
-        <div class="phase-dot"></div>
-        <span class="phase-num">PHASE 03</span>
-        <span class="phase-title">LLMs & Generative AI</span>
-        <span class="phase-duration">Month 5–7</span>
-        <span class="toggle-icon">▾</span>
-      </div>
-      <div class="phase-body">
-        <div class="cards">
-          <div class="card">
-            <span class="card-icon">💬</span>
-            <div class="card-title">LLM Engineering</div>
-            <div class="card-desc">OpenAI, Anthropic, Gemini APIs. Prompt engineering, chain-of-thought, few-shot learning patterns.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🔗</span>
-            <div class="card-title">RAG & Vector DBs</div>
-            <div class="card-desc">Retrieval-Augmented Generation, embeddings, Pinecone / ChromaDB / Weaviate. The backbone of most AI products.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🤖</span>
-            <div class="card-title">AI Agents & Tools</div>
-            <div class="card-desc">LangChain, LlamaIndex, AutoGen. Build agents that use tools, memory, and multi-step reasoning.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🎯</span>
-            <div class="card-title">Fine-Tuning</div>
-            <div class="card-desc">LoRA, PEFT, QLoRA — fine-tune open-source LLMs (Llama, Mistral) for specific business domains.</div>
-          </div>
-        </div>
-        <div class="tags">
-          <span class="tag">LangChain</span><span class="tag">LlamaIndex</span><span class="tag">Pinecone</span><span class="tag">OpenAI API</span><span class="tag">Llama 3</span><span class="tag">LoRA</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Phase 4 -->
-    <div class="phase p4">
-      <div class="phase-header" onclick="toggle(this)">
-        <div class="phase-dot"></div>
-        <span class="phase-num">PHASE 04</span>
-        <span class="phase-title">MLOps & Production AI</span>
-        <span class="phase-duration">Month 8–10</span>
-        <span class="toggle-icon">▾</span>
-      </div>
-      <div class="phase-body">
-        <div class="cards">
-          <div class="card">
-            <span class="card-icon">🐳</span>
-            <div class="card-title">Containerization</div>
-            <div class="card-desc">Docker, Kubernetes basics. Package and deploy models as APIs — the gap most analysts miss completely.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🔁</span>
-            <div class="card-title">ML Pipelines</div>
-            <div class="card-desc">MLflow, Airflow, Prefect. Version models, track experiments, automate retraining pipelines.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">📊</span>
-            <div class="card-title">Model Monitoring</div>
-            <div class="card-desc">Data drift, model degradation, Evidently AI, Grafana. Keep models healthy in production — critical for real jobs.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">⚙️</span>
-            <div class="card-title">API Development</div>
-            <div class="card-desc">FastAPI, Flask. Serve your models. Build endpoints that engineering teams can actually integrate.</div>
-          </div>
-        </div>
-        <div class="tags">
-          <span class="tag">Docker</span><span class="tag">MLflow</span><span class="tag">FastAPI</span><span class="tag">Airflow</span><span class="tag">GCP / AWS</span><span class="tag">CI/CD</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Phase 5 -->
-    <div class="phase p5">
-      <div class="phase-header" onclick="toggle(this)">
-        <div class="phase-dot"></div>
-        <span class="phase-num">PHASE 05</span>
-        <span class="phase-title">Specialize & Go Global</span>
-        <span class="phase-duration">Month 11–12</span>
-        <span class="toggle-icon">▾</span>
-      </div>
-      <div class="phase-body">
-        <div class="cards">
-          <div class="card">
-            <span class="card-icon">🎨</span>
-            <div class="card-title">Pick Your Domain</div>
-            <div class="card-desc">Marketing AI, NLP/Search, Computer Vision, or Decision Intelligence. Depth beats breadth at senior levels.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🏆</span>
-            <div class="card-title">Portfolio Projects</div>
-            <div class="card-desc">3 production-quality projects on GitHub. Not Jupyter notebooks — real deployed apps with proper docs.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">📝</span>
-            <div class="card-title">Write & Publish</div>
-            <div class="card-desc">LinkedIn articles, Medium, Substack. Document your learning. Companies hire people they've already read.</div>
-          </div>
-          <div class="card">
-            <span class="card-icon">🌏</span>
-            <div class="card-title">Target Global Roles</div>
-            <div class="card-desc">EU AI Act expertise, international certifications (AWS ML, GCP Professional ML). Tailor for Bangalore → abroad pipeline.</div>
-          </div>
-        </div>
-        <div class="tags">
-          <span class="tag">GitHub Portfolio</span><span class="tag">AWS ML Cert</span><span class="tag">GCP ML Cert</span><span class="tag">LinkedIn</span><span class="tag">Open Source</span>
-        </div>
-      </div>
-    </div>
-
+<!-- ═══════════════════════════════════════
+     JOURNEY OVERVIEW
+═══════════════════════════════════════ -->
+<section class="journey-overview">
+  <div class="section-eyebrow">The full picture</div>
+  <h2 class="section-heading">Your 7-phase journey <em>at a glance</em></h2>
+  <div class="phase-cards-row">
+    <a href="#p0" class="pcard">
+      <div class="pcard-accent" style="background:var(--p0)"></div>
+      <div class="pcard-num">Phase 0</div>
+      <div class="pcard-title">Mindset &amp; Setup</div>
+      <div class="pcard-time">Week 1–2</div>
+    </a>
+    <a href="#p1" class="pcard">
+      <div class="pcard-accent" style="background:var(--p1)"></div>
+      <div class="pcard-num">Phase 1</div>
+      <div class="pcard-title">Python &amp; Programming</div>
+      <div class="pcard-time">Month 1–2</div>
+    </a>
+    <a href="#p2" class="pcard">
+      <div class="pcard-accent" style="background:var(--p2)"></div>
+      <div class="pcard-num">Phase 2</div>
+      <div class="pcard-title">Statistics &amp; Math</div>
+      <div class="pcard-time">Month 2–3</div>
+    </a>
+    <a href="#p3" class="pcard">
+      <div class="pcard-accent" style="background:var(--p3)"></div>
+      <div class="pcard-num">Phase 3</div>
+      <div class="pcard-title">ML Fundamentals</div>
+      <div class="pcard-time">Month 3–5</div>
+    </a>
+    <a href="#p4" class="pcard">
+      <div class="pcard-accent" style="background:var(--p4)"></div>
+      <div class="pcard-num">Phase 4</div>
+      <div class="pcard-title">Deep Learning &amp; LLMs</div>
+      <div class="pcard-time">Month 5–8</div>
+    </a>
+    <a href="#p5" class="pcard">
+      <div class="pcard-accent" style="background:var(--p5)"></div>
+      <div class="pcard-num">Phase 5</div>
+      <div class="pcard-title">Build &amp; Deploy AI</div>
+      <div class="pcard-time">Month 8–12</div>
+    </a>
+    <a href="#p6" class="pcard">
+      <div class="pcard-accent" style="background:var(--p6)"></div>
+      <div class="pcard-num">Phase 6</div>
+      <div class="pcard-title">Get Hired</div>
+      <div class="pcard-time">Month 12–18</div>
+    </a>
   </div>
+</section>
 
-  <div class="footer-note">
-    <strong>💡 Your Analytics Edge:</strong> You already understand business context, stakeholder communication, and data storytelling — things pure engineers struggle with. Layer AI engineering on top of that, and you're not competing with AI engineers. You're in a category of one.<br><br>
-    <strong>Start today:</strong> Python advanced → fast.ai course → build one LLM app → deploy it → write about it on LinkedIn.
-  </div>
+<!-- ═══════════════════════════════════════
+     ROADMAP PHASES
+═══════════════════════════════════════ -->
+<div class="roadmap-body">
+
+  <!-- ── PHASE 0 ────────────────────────── -->
+  <section class="phase-section p0" id="p0">
+    <div class="phase-header-band">
+      <div class="phase-number-block">
+        <div class="pn-label">Phase</div>
+        <div class="pn-num">00</div>
+      </div>
+      <div class="phase-header-text">
+        <h2 class="phase-title">Mindset &amp; <em>Setup</em></h2>
+        <p class="phase-subtitle">Before writing a single line of code, set up your environment, your habits, and your mindset. Most people skip this and quit by month 2 — don't be most people.</p>
+        <div class="phase-meta-chips">
+          <span class="meta-chip"><span>⏱</span> Week 1–2</span>
+          <span class="meta-chip"><span>💰</span> $0 — completely free</span>
+          <span class="meta-chip"><span>🎯</span> Goal: Be fully ready to learn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROWTH MINDSET -->
+    <div class="block-label">🧠 Growth Mindset — Best Daily Motivation on the Internet</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;">The biggest reason people quit is not difficulty — it's not knowing that confusion, frustration, and slow progress are <em>completely normal</em>. These are the highest-viewed, highest-rated free resources to push yourself every day.</p>
+    <div class="res-card-grid">
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 40M Views</span><div class="res-card-title">David Goggins — "You're Not Tired, You're Weak"</div></div>
+        <div class="res-card-meta">The most watched motivational video among self-learners worldwide. Raw, honest, and genuinely changes how you approach hard days. Bookmark it. Re-watch every Monday.</div>
+        <div class="res-card-url">youtube.com/watch?v=5tSTk1083VY</div>
+        <div class="res-card-stars">★★★★★ · Watch every time you feel like skipping a study session</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 25M Views</span><div class="res-card-title">Jocko Willink — "Good" (2 min)</div></div>
+        <div class="res-card-meta">Every setback — bug you can't fix, concept you don't understand — is an opportunity. The most shared 2-minute clip in the coding community. Instantly reframes failure.</div>
+        <div class="res-card-url">youtube.com/watch?v=IdTMDpizis8</div>
+        <div class="res-card-stars">★★★★★ · Bookmark this. Open when you want to quit.</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 10M Views</span><div class="res-card-title">Ali Abdaal — "How I Learned to Code in 6 Months"</div></div>
+        <div class="res-card-meta">Honest journey from a medical student who self-taught. The best video for study system design — how to actually structure learning sessions so they stick.</div>
+        <div class="res-card-url">youtube.com/@aliabdaal — search "how I learned to code"</div>
+        <div class="res-card-stars">★★★★★ · Study techniques + consistency frameworks</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 8M Views</span><div class="res-card-title">MrBeast — "I Tried to Learn Coding in 30 Days"</div></div>
+        <div class="res-card-meta">Surprisingly useful. Shows the exact emotional rollercoaster every beginner goes through. Great for normalising "this is hard and that's okay."</div>
+        <div class="res-card-url">youtube.com/@MrBeast</div>
+        <div class="res-card-stars">★★★★☆ · Perfect for day 1 of your journey</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">BLOG</span><div class="res-card-title">Paul Graham — "How to Do Great Work"</div></div>
+        <div class="res-card-meta">Most-shared essay in tech. Y-Combinator founder's guide on curiosity, deep work, and building things worth building. Read at the start of each month.</div>
+        <div class="res-card-url">paulgraham.com/greatwork.html</div>
+        <div class="res-card-stars">★★★★★ · Career-shaping essay, not just motivation</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-book">BOOK · 10M Copies</span><div class="res-card-title">Atomic Habits — James Clear</div></div>
+        <div class="res-card-meta">The definitive guide to building and keeping habits. Chapter 3 alone (The 2-Minute Rule) will transform your daily practice. Free summary available online.</div>
+        <div class="res-card-url">jamesclear.com/atomic-habits-summary (free summary)</div>
+        <div class="res-card-stars">★★★★★ · The study habit bible</div>
+      </div>
+    </div>
+
+    <!-- ENVIRONMENT SETUP -->
+    <div class="block-label">💻 Environment Setup — Every Free Tool You Need</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;">Install all of these. Each serves a different purpose and professional AI engineers use all of them regularly.</p>
+    <table class="tool-table">
+      <thead><tr><th>Tool</th><th>What it is</th><th>Why you need it</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="tool-name">Anaconda Distribution</div><div class="tool-link">anaconda.com/download</div></td>
+          <td>Python + 250 data science libraries in one installer. Includes Jupyter Notebook, Spyder IDE, conda package manager.</td>
+          <td><strong>Start here as a beginner.</strong> Avoids all dependency issues. One install gives you everything for Phases 1–3.</td>
+          <td><span class="res-badge rb-free">Free</span> Forever</td>
+        </tr>
+        <tr>
+          <td><div class="tool-name">VS Code</div><div class="tool-link">code.visualstudio.com</div></td>
+          <td>World's most popular code editor. Lightweight, fast, extensible with thousands of free extensions.</td>
+          <td>Your primary editor for Python, HTML, Markdown. Install Python + Jupyter + Pylance + GitLens extensions.</td>
+          <td><span class="res-badge rb-free">Free</span> All platforms</td>
+        </tr>
+        <tr>
+          <td><div class="tool-name">PyCharm Community</div><div class="tool-link">jetbrains.com/pycharm</div></td>
+          <td>Full Python IDE — smarter autocomplete, built-in debugger, test runner, virtual environment manager.</td>
+          <td>Better for larger projects. Switch to this from VS Code when your code grows beyond a single notebook.</td>
+          <td><span class="res-badge rb-free">Free</span> Community Ed.</td>
+        </tr>
+        <tr>
+          <td><div class="tool-name">Google Colab</div><div class="tool-link">colab.research.google.com</div></td>
+          <td>Jupyter notebooks running in browser on Google's servers. Free GPU/TPU access included.</td>
+          <td>Run heavy deep learning models without a powerful computer. Essential for Phase 4 experiments.</td>
+          <td><span class="res-badge rb-free">Free</span> Google account</td>
+        </tr>
+        <tr>
+          <td><div class="tool-name">Git</div><div class="tool-link">git-scm.com/downloads</div></td>
+          <td>Version control — tracks every change to your code, lets you go back in time, and collaborate.</td>
+          <td>Required for every tech job. You will use this every single day of your career.</td>
+          <td><span class="res-badge rb-free">Free</span> All platforms</td>
+        </tr>
+        <tr>
+          <td><div class="tool-name">GitHub Desktop</div><div class="tool-link">desktop.github.com</div></td>
+          <td>Visual Git client — use Git with buttons instead of commands. Great training wheels for beginners.</td>
+          <td>Start here. Transition to terminal git once you understand the concepts (usually 2–4 weeks).</td>
+          <td><span class="res-badge rb-free">Free</span> All platforms</td>
+        </tr>
+        <tr>
+          <td><div class="tool-name">Notepad++</div><div class="tool-link">notepad-plus-plus.org</div></td>
+          <td>Lightweight text editor — opens any file type instantly. Good for quick edits without launching VS Code.</td>
+          <td>Useful backup editor for Windows users. Great for reading raw CSV or JSON files quickly.</td>
+          <td><span class="res-badge rb-free">Free</span> Windows only</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sub-section">
+      <div class="block-label">VS Code — Install These Extensions (Ctrl+Shift+X)</div>
+      <div class="res-list">
+        <span class="res-chip"><span class="res-badge rb-tool">Ext</span>Python (by Microsoft) — syntax highlighting &amp; linting</span>
+        <span class="res-chip"><span class="res-badge rb-tool">Ext</span>Jupyter — run .ipynb notebooks inside VS Code</span>
+        <span class="res-chip"><span class="res-badge rb-tool">Ext</span>Pylance — fast intelligent Python autocomplete</span>
+        <span class="res-chip"><span class="res-badge rb-tool">Ext</span>GitLens — see git history on every line of code</span>
+        <span class="res-chip"><span class="res-badge rb-tool">Ext</span>Rainbow CSV — colour-coded columns in CSV files</span>
+        <span class="res-chip"><span class="res-badge rb-tool">Ext</span>GitHub Copilot — AI pair programmer (free for students)</span>
+        <span class="res-chip"><span class="res-badge rb-tool">Ext</span>indent-rainbow — visualises indentation (critical for Python)</span>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px;">📺 <strong>Best setup video:</strong> "VS Code Tutorial – Beginner to Advanced" — Traversy Media &nbsp;|&nbsp; youtube.com/watch?v=WPqXP_kLzpo &nbsp;(2M+ views, ★★★★★)</p>
+    </div>
+
+    <!-- COMMAND LINE -->
+    <div class="block-label">⌨️ Terminal / Command Prompt — Essential Commands</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;">You will use the terminal every single day as an AI engineer. <strong>Windows users:</strong> use "Git Bash" (installed with Git) for Unix-style commands, or use the built-in Command Prompt for basic navigation.</p>
+
+    <div class="cmd-block">
+      <div class="cmd-block-label">Navigation &amp; File Management</div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">pwd</span><span class="cmd-comment"># Print working directory — where am I right now?</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">ls</span><span class="cmd-comment"># List files in current folder (dir on Windows CMD)</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">cd Documents</span><span class="cmd-comment"># Change into the Documents folder</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">cd ..</span><span class="cmd-comment"># Go back up one level to parent folder</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">mkdir my-project</span><span class="cmd-comment"># Create a new folder</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">rm filename.txt</span><span class="cmd-comment"># Delete a file — permanent, no recycle bin!</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">cp file.txt backup.txt</span><span class="cmd-comment"># Copy a file</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">mv old.txt new.txt</span><span class="cmd-comment"># Rename or move a file</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">clear</span><span class="cmd-comment"># Clear the terminal screen (cls on Windows)</span></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-block-label">Python &amp; Package Management</div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">python --version</span><span class="cmd-comment"># Verify Python is installed</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">python script.py</span><span class="cmd-comment"># Run a Python script file</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">python</span><span class="cmd-comment"># Open interactive Python shell (type exit() to leave)</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">pip install pandas</span><span class="cmd-comment"># Install a single library</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">pip install pandas numpy matplotlib scikit-learn</span><span class="cmd-comment"># Install multiple at once</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">pip list</span><span class="cmd-comment"># See all installed packages</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">pip install --upgrade pandas</span><span class="cmd-comment"># Update a package</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">jupyter notebook</span><span class="cmd-comment"># Launch Jupyter in your browser</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">conda install numpy</span><span class="cmd-comment"># Install via Anaconda's package manager</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">conda create -n aienv python=3.11</span><span class="cmd-comment"># Create a new Anaconda environment</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">conda activate aienv</span><span class="cmd-comment"># Switch into that environment</span></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-block-label">Virtual Environments — Keep Projects Isolated</div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">python -m venv myenv</span><span class="cmd-comment"># Create isolated environment</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">source myenv/bin/activate</span><span class="cmd-comment"># Activate (Mac/Linux)</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">myenv\Scripts\activate</span><span class="cmd-comment"># Activate (Windows)</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">deactivate</span><span class="cmd-comment"># Exit the virtual environment</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">pip freeze &gt; requirements.txt</span><span class="cmd-comment"># Export all dependencies</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">pip install -r requirements.txt</span><span class="cmd-comment"># Install from requirements file</span></div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);margin-bottom:36px;line-height:1.6;">📺 <strong>Best terminal videos:</strong>&nbsp; "Command Line Crash Course" — freeCodeCamp (youtube.com/watch?v=uwAqEzhyjtw, 3M+ views) &nbsp;·&nbsp; "Linux Terminal Full Beginner Guide" — Network Chuck (2M+ views)</p>
+
+    <!-- GIT COMMANDS -->
+    <div class="block-label">🐙 Git &amp; GitHub — Highest Rated Resources</div>
+    <div class="res-card-grid">
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 6M Views</span><div class="res-card-title">Git &amp; GitHub Crash Course — freeCodeCamp</div></div>
+        <div class="res-card-meta">The highest-rated Git beginner video on YouTube. Covers installation to branching in one 1-hour session. Watch this before anything else.</div>
+        <div class="res-card-url">youtube.com/watch?v=RGOj5yH7evk</div>
+        <div class="res-card-stars">★★★★★ · The undisputed #1 Git beginner resource</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 3M Views</span><div class="res-card-title">Git in 100 Seconds — Fireship</div></div>
+        <div class="res-card-meta">Perfect 2-minute conceptual overview. Watch before the freeCodeCamp video to understand what you're about to learn and why it matters.</div>
+        <div class="res-card-url">youtube.com/watch?v=hwP7WQkmECE</div>
+        <div class="res-card-stars">★★★★★ · Watch first, then the 1-hour one</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE</span><div class="res-card-title">GitHub Skills — Official Interactive Platform</div></div>
+        <div class="res-card-meta">GitHub's own free course where you learn by actually committing to real repositories. Best hands-on Git practice available anywhere — built by GitHub itself.</div>
+        <div class="res-card-url">skills.github.com</div>
+        <div class="res-card-stars">★★★★★ · Do this after the freeCodeCamp video</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE</span><div class="res-card-title">Pro Git Book — Official Free Reference</div></div>
+        <div class="res-card-meta">The definitive Git book, completely free online. Read chapters 1–3 only to start. Return to chapters 5–7 when working on team projects later in your journey.</div>
+        <div class="res-card-url">git-scm.com/book/en/v2</div>
+        <div class="res-card-stars">★★★★★ · Reference book — don't read cover to cover</div>
+      </div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-block-label">Git — Commands You Will Use Every Single Day</div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git init</span><span class="cmd-comment"># Start tracking a new project folder with git</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git clone https://github.com/user/repo.git</span><span class="cmd-comment"># Download a project from GitHub</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git status</span><span class="cmd-comment"># See what has changed (run this constantly)</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git add .</span><span class="cmd-comment"># Stage ALL changed files for the next save</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git add filename.py</span><span class="cmd-comment"># Stage just one specific file</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git commit -m "Add data cleaning function"</span><span class="cmd-comment"># Save a snapshot with a description</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git push origin main</span><span class="cmd-comment"># Upload your commits to GitHub</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git pull</span><span class="cmd-comment"># Download latest changes from GitHub</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git log --oneline</span><span class="cmd-comment"># See compact history of all commits</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git branch feature-name</span><span class="cmd-comment"># Create a new branch for a feature</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git checkout feature-name</span><span class="cmd-comment"># Switch to that branch</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git merge feature-name</span><span class="cmd-comment"># Merge completed feature back into main</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git diff</span><span class="cmd-comment"># See exactly what changed in every file</span></div>
+      <div class="cmd-line"><span class="cmd-prompt">$</span><span class="cmd-code">git stash</span><span class="cmd-comment"># Temporarily shelve uncommitted changes</span></div>
+    </div>
+
+    <!-- STUDY HABIT -->
+    <div class="block-label">📅 Build a Study Habit — Systems That Work</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">⏰</span><div class="topic-tile-name">The 1-Hour Daily Rule</div></div>
+        <div class="topic-tile-desc">1 focused hour every day beats 7 hours on Sunday. After 30 days you will have 30 hours of real learning without a single marathon session. Block it like a meeting that cannot be moved.</div>
+        <div class="topic-tile-why">→ Spaced repetition beats cramming</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔁</span><div class="topic-tile-name">Build First, Watch Second</div></div>
+        <div class="topic-tile-desc">Watch 20 minutes, then immediately try to code what you just saw from scratch without rewinding. Struggle before looking. That struggle is the learning. Passive watching alone teaches almost nothing.</div>
+        <div class="topic-tile-why">→ Active recall is 5x more effective</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🗓️</span><div class="topic-tile-name">Weekly Deliverable Goals</div></div>
+        <div class="topic-tile-desc">Set one concrete thing to ship each week, not topics to "cover." "This week I will build a script that reads a CSV and prints summary stats." Finish it. That feeling of completing something real is addictive and sustainable.</div>
+        <div class="topic-tile-why">→ Output-based learning over input-based</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📝</span><div class="topic-tile-name">Learn in Public on LinkedIn</div></div>
+        <div class="topic-tile-desc">Post weekly about what you built or learned. Even if nobody reads it at first. This builds your professional presence from day one and forces you to articulate understanding clearly. Recruiters will find you eventually.</div>
+        <div class="topic-tile-why">→ Career ROI that starts immediately</div>
+      </div>
+    </div>
+
+    <div class="block-label">Phase 0 checklist — tick as you complete each step</div>
+    <div class="checklist">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Anaconda installed — opened Jupyter Notebook at least once</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> VS Code installed with Python, Jupyter, and Pylance extensions</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> PyCharm Community installed (as your second IDE)</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Google Colab — account created and ran one cell successfully</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Git installed — confirmed with "git --version" in terminal</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> GitHub account created with profile photo and short bio</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Watched freeCodeCamp Git video (youtube.com/watch?v=RGOj5yH7evk)</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Created first repository and made 3+ commits with meaningful messages</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Can navigate terminal: pwd, ls, cd, mkdir without looking it up</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Can install a Python library with pip from the terminal</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Daily study time blocked in calendar for next 4 weeks</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> First LinkedIn post written: "Starting my AI Engineering journey today"</div>
+    </div>
+  </section>
+
+  <!-- ── PHASE 1 ────────────────────────── -->
+  <section class="phase-section p1" id="p1">
+    <div class="phase-header-band">
+      <div class="phase-number-block">
+        <div class="pn-label">Phase</div>
+        <div class="pn-num">01</div>
+      </div>
+      <div class="phase-header-text">
+        <h2 class="phase-title">Python, SQL &amp; <em>Programming</em></h2>
+        <p class="phase-subtitle">Python is the language of AI. SQL is the language of data. Together they are the foundation of 95% of AI work. Learn both before touching any ML library.</p>
+        <div class="phase-meta-chips">
+          <span class="meta-chip"><span>⏱</span> Month 1–3</span>
+          <span class="meta-chip"><span>💰</span> Free → optional paid</span>
+          <span class="meta-chip"><span>🎯</span> Goal: Think in code, speak in data</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PYTHON BEGINNER -->
+    <div class="block-label">🐍 Python — Beginner Courses (Start Here)</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;">The resources below are specifically selected for beginners who find official docs intimidating. Ranked by how beginner-friendly and engaging they are — not just how comprehensive.</p>
+    <div class="res-card-grid">
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-paid">UDEMY · 6M Students</span><div class="res-card-title">100 Days of Code: Python Bootcamp — Dr. Angela Yu</div></div>
+        <div class="res-card-meta">The #1 rated Python course on Udemy with 6M+ students. Angela Yu's teaching style is legendary for keeping beginners engaged. 100 real projects across 100 days. Best for complete beginners who need structure and motivation.</div>
+        <div class="res-card-url">udemy.com/course/100-days-of-code/ · Buy on sale for ₹499–699</div>
+        <div class="res-card-stars">★★★★★ · The single best beginner Python course available</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-paid">UDEMY · Recommended</span><div class="res-card-title">Python for Data Science &amp; EDA — Jose Portilla</div></div>
+        <div class="res-card-meta">Specifically focused on data prep and exploratory data analysis — exactly what AI engineers do daily. After Angela Yu's course, this is the perfect bridge into data science Python.</div>
+        <div class="res-card-url">udemy.com/course/data-science-in-python-data-prep-eda/</div>
+        <div class="res-card-stars">★★★★★ · Perfect second course after 100 Days of Code</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · 8M Views</span><div class="res-card-title">Python Full Course for Beginners — freeCodeCamp</div></div>
+        <div class="res-card-meta">4.5-hour complete Python course on YouTube — totally free. Covers all fundamentals with live coding. Best free alternative to paid courses. Great if you want to try before buying.</div>
+        <div class="res-card-url">youtube.com/watch?v=rfscVS0vtbw</div>
+        <div class="res-card-stars">★★★★★ · Best completely free Python course</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Harvard</span><div class="res-card-title">CS50P — Introduction to Python — Harvard University</div></div>
+        <div class="res-card-meta">Harvard's free Python course taught by David Malan — the world's most engaging CS lecturer. Rigorous, project-based, and free to audit. Certificate available (paid). Best for people who want academic depth.</div>
+        <div class="res-card-url">cs50.harvard.edu/python · Free to audit on edX</div>
+        <div class="res-card-stars">★★★★★ · Harvard-level quality, completely free</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Interactive</span><div class="res-card-title">Kaggle Python Micro-Course</div></div>
+        <div class="res-card-meta">Short, focused, browser-based Python course. No setup needed. Best if you want to learn Python directly in the context of data — you're working with real datasets from lesson one.</div>
+        <div class="res-card-url">kaggle.com/learn/python</div>
+        <div class="res-card-stars">★★★★☆ · Great complement to video courses</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · Mosh Hamedani</span><div class="res-card-title">Python for Beginners (Full Course) — Programming with Mosh</div></div>
+        <div class="res-card-meta">6M+ views. Mosh's teaching style is extremely clear and structured. His "Python for Beginners" series is one of the most recommended on Reddit and coding forums for absolute beginners.</div>
+        <div class="res-card-url">youtube.com/watch?v=_uQrJ0TkZlc</div>
+        <div class="res-card-stars">★★★★★ · Best structured free YouTube Python series</div>
+      </div>
+    </div>
+
+    <!-- PYTHON CORE TOPICS -->
+    <div class="block-label">Core Python Topics to Cover</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔤</span><div class="topic-tile-name">Python Basics</div></div>
+        <div class="topic-tile-desc">Variables, data types (int, string, list, dict, tuple, set), if/else, for and while loops, functions. The absolute foundation — spend 2–3 weeks here minimum.</div>
+        <div class="topic-tile-why">→ Used in every single AI project</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📦</span><div class="topic-tile-name">NumPy, Pandas, Matplotlib</div></div>
+        <div class="topic-tile-desc">NumPy (fast array math), Pandas (tables/data frames), Matplotlib + Seaborn (charts). These three libraries are used in literally every data and AI project.</div>
+        <div class="topic-tile-why">→ The holy trinity of data Python</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📓</span><div class="topic-tile-name">Jupyter Notebooks</div></div>
+        <div class="topic-tile-desc">Write code in cells, see output immediately, mix markdown notes with code. This is the standard working format for all data science and AI. Learn shortcuts (Shift+Enter, B, D).</div>
+        <div class="topic-tile-why">→ Industry standard for data work</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🐛</span><div class="topic-tile-name">Reading Errors &amp; Debugging</div></div>
+        <div class="topic-tile-desc">Reading Python error messages top to bottom. Using print() to inspect variables. NameError, TypeError, IndexError — know what each means. Googling errors is a skill, not cheating.</div>
+        <div class="topic-tile-why">→ 50% of real coding time is debugging</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🗂️</span><div class="topic-tile-name">Files, APIs &amp; JSON</div></div>
+        <div class="topic-tile-desc">Reading and writing CSV and JSON files. Making API calls with the requests library. Parsing JSON responses. This is how AI applications get their real-world data.</div>
+        <div class="topic-tile-why">→ AI always starts with external data</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🏗️</span><div class="topic-tile-name">OOP Basics</div></div>
+        <div class="topic-tile-desc">Classes, objects, __init__, methods, inheritance. You don't need to master this immediately — but you need to read it without panic, because every AI library uses it heavily.</div>
+        <div class="topic-tile-why">→ All AI frameworks are built on classes</div>
+      </div>
+    </div>
+
+    <!-- SQL — CRITICAL SECTION -->
+    <div class="block-label">🗄️ SQL — The Language of Data (Critical &amp; Often Missing)</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;"><strong>SQL is in 95% of AI job descriptions and almost every beginner roadmap ignores it.</strong> AI models don't create data — they consume it. Almost all real-world data lives in SQL databases. If you can't query a database, you're always dependent on someone else to get your data.</p>
+
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔍</span><div class="topic-tile-name">SELECT &amp; Filtering</div></div>
+        <div class="topic-tile-desc">SELECT, FROM, WHERE, ORDER BY, LIMIT. These 5 keywords let you pull any data from any table. 80% of SQL in AI work is just these basics done well.</div>
+        <div class="topic-tile-why">→ Daily tool in every data role</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔗</span><div class="topic-tile-name">JOINs</div></div>
+        <div class="topic-tile-desc">INNER JOIN, LEFT JOIN, RIGHT JOIN. How to combine data from multiple tables. This is the skill that separates SQL beginners from SQL practitioners. Draw the Venn diagrams.</div>
+        <div class="topic-tile-why">→ Real data always lives across tables</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📊</span><div class="topic-tile-name">Aggregations &amp; GROUP BY</div></div>
+        <div class="topic-tile-desc">COUNT, SUM, AVG, MIN, MAX with GROUP BY and HAVING. How to summarise and segment data. Used constantly in feature engineering and EDA before ML.</div>
+        <div class="topic-tile-why">→ Foundation of all data analysis</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🪟</span><div class="topic-tile-name">Window Functions</div></div>
+        <div class="topic-tile-desc">RANK(), ROW_NUMBER(), LAG(), LEAD() with OVER() and PARTITION BY. Advanced SQL that creates time-series features and rankings — incredibly powerful for ML feature engineering.</div>
+        <div class="topic-tile-why">→ Advanced feature creation for ML</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🐍</span><div class="topic-tile-name">SQL + Python Integration</div></div>
+        <div class="topic-tile-desc">Running SQL queries from Python using SQLite3 (built-in), SQLAlchemy, or pandas.read_sql(). How to pull database data directly into a Pandas DataFrame for ML pipelines.</div>
+        <div class="topic-tile-why">→ How AI pipelines fetch training data</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">☁️</span><div class="topic-tile-name">BigQuery / Cloud SQL</div></div>
+        <div class="topic-tile-desc">Google BigQuery for querying massive datasets in the cloud. Free tier available. Used at Google, Adobe, most large companies. Standard SQL syntax with scale.</div>
+        <div class="topic-tile-why">→ Enterprise SQL at data scale</div>
+      </div>
+    </div>
+
+    <div class="block-label">SQL — Best Free Resources</div>
+    <div class="res-card-grid">
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · 5M+ Users</span><div class="res-card-title">Mode SQL Tutorial — Best Free SQL Course</div></div>
+        <div class="res-card-meta">The most comprehensive free SQL tutorial online. Covers basic to advanced with real datasets. Browser-based — no installation. The go-to recommendation from data professionals on Reddit and LinkedIn.</div>
+        <div class="res-card-url">mode.com/sql-tutorial</div>
+        <div class="res-card-stars">★★★★★ · Start here for SQL</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Interactive</span><div class="res-card-title">SQLZoo — Learn SQL in Your Browser</div></div>
+        <div class="res-card-meta">Interactive SQL exercises at increasing difficulty levels. Run real queries in your browser with immediate feedback. Great for practice after Mode's tutorial.</div>
+        <div class="res-card-url">sqlzoo.net</div>
+        <div class="res-card-stars">★★★★★ · Best interactive SQL practice</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Kaggle</span><div class="res-card-title">Kaggle SQL Course — Intro to SQL + Advanced SQL</div></div>
+        <div class="res-card-meta">Two free micro-courses covering basic and advanced SQL using Google BigQuery. Learn SQL directly on real data at scale — the same environment used in most enterprise jobs.</div>
+        <div class="res-card-url">kaggle.com/learn/intro-to-sql · kaggle.com/learn/advanced-sql</div>
+        <div class="res-card-stars">★★★★★ · Best free BigQuery SQL training</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 4M Views</span><div class="res-card-title">SQL Tutorial — Full Database Course — freeCodeCamp</div></div>
+        <div class="res-card-meta">4.5-hour comprehensive SQL course. Everything from database creation to complex queries. One of the most-watched SQL videos on YouTube. Great for systematic learning.</div>
+        <div class="res-card-url">youtube.com/watch?v=HXV3zeQKqGY</div>
+        <div class="res-card-stars">★★★★★ · Best free YouTube SQL course</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE</span><div class="res-card-title">LeetCode SQL Problems (Easy + Medium)</div></div>
+        <div class="res-card-meta">Practice SQL with interview-style problems. Solving 30–50 SQL problems on LeetCode is the single best way to prepare for the SQL parts of AI and data engineering interviews.</div>
+        <div class="res-card-url">leetcode.com/problemset/database</div>
+        <div class="res-card-stars">★★★★★ · Essential for interview preparation</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-tool">TOOL</span><div class="res-card-title">DB Browser for SQLite — Free Local SQL Editor</div></div>
+        <div class="res-card-meta">Free desktop tool to create, view, and edit SQLite databases. Practice SQL locally without any server. Perfect for learning SQL with real data on your own computer.</div>
+        <div class="res-card-url">sqlitebrowser.org</div>
+        <div class="res-card-stars">★★★★★ · Free forever, all platforms</div>
+      </div>
+    </div>
+
+    <!-- ADVANCED PYTHON + PROJECTS -->
+    <div class="block-label">🚀 Python Advanced &amp; Projects — After the Basics</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;">Once you can comfortably write basic Python, these resources will bridge you to production-quality AI code.</p>
+    <div class="res-card-grid">
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Best Channel</span><div class="res-card-title">Corey Schafer — Python Tutorials</div></div>
+        <div class="res-card-meta">The most recommended Python YouTube channel among professionals. His series on OOP, decorators, generators, and virtual environments are the clearest explanations on the internet. Watch after 100 Days of Code.</div>
+        <div class="res-card-url">youtube.com/@coreyms</div>
+        <div class="res-card-stars">★★★★★ · Go-to channel for intermediate Python</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Book</span><div class="res-card-title">Automate the Boring Stuff with Python — Al Sweigart</div></div>
+        <div class="res-card-meta">Free to read online. Teaches Python by building 20 practical real-world scripts — file automation, web scraping, spreadsheets, PDFs. Best book for people who learn by doing useful things.</div>
+        <div class="res-card-url">automatetheboringstuff.com (free online)</div>
+        <div class="res-card-stars">★★★★★ · 100% free online + paid print version</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE</span><div class="res-card-title">Real Python — Tutorials &amp; Articles</div></div>
+        <div class="res-card-meta">Hundreds of free, well-written tutorials on every Python topic imaginable. The most trusted Python learning website among professionals. Bookmark it and return constantly throughout your journey.</div>
+        <div class="res-card-url">realpython.com</div>
+        <div class="res-card-stars">★★★★★ · The Wikipedia of Python learning</div>
+      </div>
+    </div>
+
+    <div class="block-label">Your first two projects — build these in order</div>
+    <div class="project-card">
+      <div class="proj-num">01</div>
+      <div>
+        <div class="proj-name">Data Explorer Script</div>
+        <div class="proj-desc">Download any CSV dataset from Kaggle. Load it with Pandas, calculate complete stats (mean, max, min, median, std dev), find missing values, identify outliers, and make 3 meaningful charts. Write a paragraph explaining your findings. Push to GitHub with a full README. This proves you can work with real data — not just toy tutorial examples.</div>
+        <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Pandas</span><span class="proj-tag">Matplotlib</span><span class="proj-tag">Jupyter</span><span class="proj-tag">GitHub</span></div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="proj-num">02</div>
+      <div>
+        <div class="proj-name">SQL + Python Data Pipeline</div>
+        <div class="proj-desc">Create a SQLite database, load a real dataset into it using Python, write 10 meaningful SQL queries (basic, joins, aggregations, window functions), then pull results into Pandas for visualisation. Document every query with a comment explaining what business question it answers. This project alone makes you stand out from 80% of applicants.</div>
+        <div class="proj-tags"><span class="proj-tag">SQL</span><span class="proj-tag">SQLite</span><span class="proj-tag">Python</span><span class="proj-tag">Pandas</span><span class="proj-tag">SQLAlchemy</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHASE 2 ────────────────────────── -->
+  <section class="phase-section p2" id="p2">
+    <div class="phase-header-band">
+      <div class="phase-number-block">
+        <div class="pn-label">Phase</div>
+        <div class="pn-num">02</div>
+      </div>
+      <div class="phase-header-text">
+        <h2 class="phase-title">Statistics &amp; <em>Math</em></h2>
+        <p class="phase-subtitle">Statistics is the backbone of every AI model. You don't need a PhD — just enough to understand why models work, when they fail, and how to evaluate them honestly.</p>
+        <div class="phase-meta-chips">
+          <span class="meta-chip"><span>⏱</span> Month 2–3</span>
+          <span class="meta-chip"><span>💰</span> $0 — completely free</span>
+          <span class="meta-chip"><span>🎯</span> Goal: Understand the "why" behind AI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-label">Statistics you must know</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📊</span><div class="topic-tile-name">Descriptive Statistics</div></div>
+        <div class="topic-tile-desc">Mean, median, mode, variance, standard deviation, percentiles. How to describe and summarise a dataset in numbers. Used every single day.</div>
+        <div class="topic-tile-why">→ First thing you do with any dataset</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🎲</span><div class="topic-tile-name">Probability</div></div>
+        <div class="topic-tile-desc">What probability means, basic rules (AND/OR), Bayes' theorem in plain English. AI models output probabilities — you must understand what they mean.</div>
+        <div class="topic-tile-why">→ ML outputs are probabilities</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔔</span><div class="topic-tile-name">Distributions</div></div>
+        <div class="topic-tile-desc">The Normal distribution (bell curve), skewness, what it means when data isn't normal. Many ML algorithms assume normality — you need to know when to check.</div>
+        <div class="topic-tile-why">→ Assumptions behind ML algorithms</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🧪</span><div class="topic-tile-name">Hypothesis Testing</div></div>
+        <div class="topic-tile-desc">p-values, t-tests, confidence intervals. What "statistically significant" actually means. Essential for A/B testing and validating whether your model truly improved.</div>
+        <div class="topic-tile-why">→ Used in every AI experiment</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📈</span><div class="topic-tile-name">Correlation &amp; Regression</div></div>
+        <div class="topic-tile-desc">How two variables relate to each other. Linear regression is literally the simplest ML model — mastering this is mastering the conceptual foundation of all ML.</div>
+        <div class="topic-tile-why">→ Linear regression IS machine learning</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔍</span><div class="topic-tile-name">Bayesian Thinking</div></div>
+        <div class="topic-tile-desc">Updating beliefs with new evidence. This is how AI systems reason under uncertainty — not with certainty, but with constantly updated probabilities.</div>
+        <div class="topic-tile-why">→ How AI "thinks" probabilistically</div>
+      </div>
+    </div>
+
+    <div class="block-label">Math foundations for ML</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📐</span><div class="topic-tile-name">Linear Algebra</div></div>
+        <div class="topic-tile-desc">Vectors, matrices, dot products, matrix multiplication. Neural networks are literally stacks of matrix multiplications. This unlocks everything in deep learning.</div>
+        <div class="topic-tile-why">→ Neural nets = matrix math</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📉</span><div class="topic-tile-name">Calculus Intuition</div></div>
+        <div class="topic-tile-desc">What a derivative means (rate of change), what a gradient is. You don't need to solve complex integrals — just understand gradient descent conceptually.</div>
+        <div class="topic-tile-why">→ Gradient descent trains every model</div>
+      </div>
+    </div>
+
+    <div class="block-label">Best resources</div>
+    <div class="res-list">
+      <span class="res-chip"><span class="res-badge rb-yt">YT</span>StatQuest with Josh Starmer — best stats on YouTube, ever</span>
+      <span class="res-chip"><span class="res-badge rb-yt">YT</span>3Blue1Brown — "Essence of Linear Algebra" series</span>
+      <span class="res-chip"><span class="res-badge rb-yt">YT</span>3Blue1Brown — "Neural Networks" (calculus intuition)</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>Khan Academy — Statistics &amp; Probability course</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>Kaggle — Pandas &amp; Data Visualisation micro-courses</span>
+      <span class="res-chip"><span class="res-badge rb-book">Book</span>"Think Stats" — Allen Downey (free PDF online)</span>
+    </div>
+
+    <div class="block-label">Your second project — build this</div>
+    <div class="project-card">
+      <div class="proj-num">02</div>
+      <div>
+        <div class="proj-name">Statistical EDA Report</div>
+        <div class="proj-desc">Take a famous dataset — Titanic or House Prices on Kaggle. Write a complete Exploratory Data Analysis: describe all distributions, find correlations, identify outliers, run at least one hypothesis test. Publish as a well-written Jupyter notebook on GitHub. This shows you understand data deeply before you touch any ML model — a quality most beginners skip entirely.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">Statistics</span>
+          <span class="proj-tag">Pandas</span>
+          <span class="proj-tag">Seaborn</span>
+          <span class="proj-tag">SciPy</span>
+          <span class="proj-tag">Jupyter</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHASE 3 ────────────────────────── -->
+  <section class="phase-section p3" id="p3">
+    <div class="phase-header-band">
+      <div class="phase-number-block">
+        <div class="pn-label">Phase</div>
+        <div class="pn-num">03</div>
+      </div>
+      <div class="phase-header-text">
+        <h2 class="phase-title">Machine Learning <em>Fundamentals</em></h2>
+        <p class="phase-subtitle">Before touching any algorithm, understand the landscape: what types of AI exist, how ML differs from traditional programming, and the full lifecycle from raw data to deployed model.</p>
+        <div class="phase-meta-chips">
+          <span class="meta-chip"><span>⏱</span> Month 3–6</span>
+          <span class="meta-chip"><span>💰</span> $0–$50</span>
+          <span class="meta-chip"><span>🎯</span> Goal: Build, evaluate, and understand real models</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPES OF AI -->
+    <div class="block-label">🤖 Types of AI — What Actually Exists</div>
+    <div class="ai-types-grid">
+      <div class="ai-type-card">
+        <div class="ai-type-icon">🧮</div>
+        <div class="ai-type-name">Machine Learning (ML)</div>
+        <div class="ai-type-desc">Systems that learn patterns from data without being explicitly programmed for every rule. Prediction, classification, clustering.</div>
+        <div class="ai-type-eg">e.g. Spam filter, fraud detection, price prediction</div>
+      </div>
+      <div class="ai-type-card">
+        <div class="ai-type-icon">🧠</div>
+        <div class="ai-type-name">Deep Learning (DL)</div>
+        <div class="ai-type-desc">A subset of ML using neural networks with many layers. Excels at images, audio, text. Requires more data and compute than classical ML.</div>
+        <div class="ai-type-eg">e.g. Image recognition, speech-to-text, translation</div>
+      </div>
+      <div class="ai-type-card">
+        <div class="ai-type-icon">💬</div>
+        <div class="ai-type-name">Natural Language Processing (NLP)</div>
+        <div class="ai-type-desc">AI that understands and generates human language. Powered by deep learning and transformers. The field behind ChatGPT, BERT, Claude.</div>
+        <div class="ai-type-eg">e.g. Chatbots, sentiment analysis, summarisation</div>
+      </div>
+      <div class="ai-type-card">
+        <div class="ai-type-icon">👁️</div>
+        <div class="ai-type-name">Computer Vision (CV)</div>
+        <div class="ai-type-desc">AI that understands and interprets images and video. CNNs are the backbone. Used in healthcare, manufacturing, autonomous vehicles.</div>
+        <div class="ai-type-eg">e.g. Face recognition, X-ray analysis, self-driving</div>
+      </div>
+      <div class="ai-type-card">
+        <div class="ai-type-icon">🎮</div>
+        <div class="ai-type-name">Reinforcement Learning (RL)</div>
+        <div class="ai-type-desc">AI learns by taking actions and receiving rewards or penalties. Used in game-playing AI, robotics, and recommendation systems.</div>
+        <div class="ai-type-eg">e.g. AlphaGo, robot control, ad bidding</div>
+      </div>
+      <div class="ai-type-card">
+        <div class="ai-type-icon">🎨</div>
+        <div class="ai-type-name">Generative AI (GenAI)</div>
+        <div class="ai-type-desc">AI that creates new content — text, images, code, audio. Powered by LLMs and diffusion models. The fastest-growing area in AI right now.</div>
+        <div class="ai-type-eg">e.g. ChatGPT, Stable Diffusion, GitHub Copilot</div>
+      </div>
+    </div>
+
+    <!-- AI LIFECYCLE -->
+    <div class="block-label">🔄 The AI/ML Project Lifecycle — From Data to Deployment</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;">Every AI project — no matter the complexity — follows this lifecycle. Understanding all 7 stages is what makes you an engineer, not just someone who runs a training loop.</p>
+    <div class="lifecycle-row">
+      <div class="lc-step">
+        <div class="lc-arrow">→</div>
+        <div class="lc-num">01</div>
+        <div class="lc-name">Problem Definition</div>
+        <div class="lc-desc">Define the business question. What are you predicting? What does success look like?</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-arrow">→</div>
+        <div class="lc-num">02</div>
+        <div class="lc-name">Data Collection</div>
+        <div class="lc-desc">Gather data from databases, APIs, web scraping, user logs, or third-party sources.</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-arrow">→</div>
+        <div class="lc-num">03</div>
+        <div class="lc-name">EDA &amp; Cleaning</div>
+        <div class="lc-desc">Explore distributions, find missing values, remove outliers, understand what the data is telling you.</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-arrow">→</div>
+        <div class="lc-num">04</div>
+        <div class="lc-name">Feature Engineering</div>
+        <div class="lc-desc">Transform raw data into meaningful inputs. Scale, encode, create derived features. Better features beat better models.</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-arrow">→</div>
+        <div class="lc-num">05</div>
+        <div class="lc-name">Model Training</div>
+        <div class="lc-desc">Select algorithm, split train/test data, train, tune hyperparameters with cross-validation.</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-arrow">→</div>
+        <div class="lc-num">06</div>
+        <div class="lc-name">Evaluation</div>
+        <div class="lc-desc">Measure with correct metrics. Identify bias. Test on truly unseen data. Document limitations honestly.</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-num">07</div>
+        <div class="lc-name">Deployment &amp; Monitoring</div>
+        <div class="lc-desc">Serve the model via API. Monitor for drift, degradation, and failures in production over time.</div>
+      </div>
+    </div>
+
+    <!-- ML TAXONOMY -->
+    <div class="block-label">📚 ML Algorithm Taxonomy — What Falls Under What</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.75;">Machine learning algorithms are divided into 3 main families. Knowing which family to use is often more important than knowing all the algorithms in each family.</p>
+    <div class="ml-taxonomy">
+      <div class="ml-category">
+        <div class="ml-cat-header" style="background:var(--p1);">🏷️ Supervised Learning<br><span style="font-size:11px;font-weight:400;opacity:0.8;">Labelled data — you have the answers to learn from</span></div>
+        <div class="ml-cat-body">
+          <div class="ml-algo"><div class="ml-algo-name">Linear Regression</div><div class="ml-algo-use">Predict numbers (price, sales)</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Logistic Regression</div><div class="ml-algo-use">Yes/No classification</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Decision Tree</div><div class="ml-algo-use">Interpretable rule-based model</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Random Forest</div><div class="ml-algo-use">Ensemble of trees, robust</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">XGBoost / LightGBM</div><div class="ml-algo-use">Top-performing tabular ML</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">SVM</div><div class="ml-algo-use">High-dim classification</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">KNN</div><div class="ml-algo-use">Similarity-based prediction</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Naive Bayes</div><div class="ml-algo-use">Text classification, spam</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Neural Networks</div><div class="ml-algo-use">Complex patterns, images, NLP</div></div>
+        </div>
+      </div>
+      <div class="ml-category">
+        <div class="ml-cat-header" style="background:var(--p4);">🔍 Unsupervised Learning<br><span style="font-size:11px;font-weight:400;opacity:0.8;">No labels — find hidden patterns in data</span></div>
+        <div class="ml-cat-body">
+          <div class="ml-algo"><div class="ml-algo-name">K-Means Clustering</div><div class="ml-algo-use">Customer segmentation</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">DBSCAN</div><div class="ml-algo-use">Density-based clustering</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Hierarchical Clustering</div><div class="ml-algo-use">Tree-based grouping</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">PCA</div><div class="ml-algo-use">Reduce dimensions, visualise data</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">t-SNE / UMAP</div><div class="ml-algo-use">Visualise high-dim data in 2D</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Autoencoders</div><div class="ml-algo-use">Anomaly detection, compression</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Apriori / FP-Growth</div><div class="ml-algo-use">Market basket analysis</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Isolation Forest</div><div class="ml-algo-use">Outlier/anomaly detection</div></div>
+        </div>
+      </div>
+      <div class="ml-category">
+        <div class="ml-cat-header" style="background:var(--p0);">🎮 Reinforcement Learning<br><span style="font-size:11px;font-weight:400;opacity:0.8;">Agent learns from reward/penalty feedback</span></div>
+        <div class="ml-cat-body">
+          <div class="ml-algo"><div class="ml-algo-name">Q-Learning</div><div class="ml-algo-use">Game playing, simple control</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Deep Q-Network (DQN)</div><div class="ml-algo-use">Atari games, complex environments</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Policy Gradient (REINFORCE)</div><div class="ml-algo-use">Continuous action spaces</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">PPO</div><div class="ml-algo-use">State-of-the-art RL agent training</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">RLHF</div><div class="ml-algo-use">How ChatGPT was trained on human feedback</div></div>
+          <div class="ml-algo"><div class="ml-algo-name">Multi-Armed Bandit</div><div class="ml-algo-use">A/B testing, recommendation optimisation</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEY ALGORITHMS -->
+    <div class="block-label">Must-Learn Algorithms for Beginners</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📏</span><div class="topic-tile-name">Linear &amp; Logistic Regression</div></div>
+        <div class="topic-tile-desc">The "hello world" of ML. Master these completely before moving on — they appear in 80% of production ML systems because they're interpretable and reliable.</div>
+        <div class="topic-tile-why">→ Baseline for every problem</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🌳</span><div class="topic-tile-name">Decision Trees &amp; Random Forests</div></div>
+        <div class="topic-tile-desc">Decision trees are if-then rules in tree form. Random forests combine hundreds into an ensemble. Both are interpretable, powerful, and widely used in real-world business ML.</div>
+        <div class="topic-tile-why">→ Most used in industry tabular ML</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">⚡</span><div class="topic-tile-name">XGBoost &amp; LightGBM</div></div>
+        <div class="topic-tile-desc">Wins most Kaggle competitions on structured data. Gradient boosting builds trees sequentially, each correcting the last. Learn after Random Forests — same concept, better performance.</div>
+        <div class="topic-tile-why">→ The top algorithm for tabular data</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">👥</span><div class="topic-tile-name">K-Means Clustering</div></div>
+        <div class="topic-tile-desc">Group similar data points together without any labels. The most widely used unsupervised algorithm. Essential for customer segmentation, anomaly detection, and data exploration.</div>
+        <div class="topic-tile-why">→ Core unsupervised learning tool</div>
+      </div>
+    </div>
+
+    <!-- CRITICAL CONCEPTS -->
+    <div class="block-label">⚠️ Critical Concepts Most Beginners Skip</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">✂️</span><div class="topic-tile-name">Train / Validation / Test Split</div></div>
+        <div class="topic-tile-desc">Never evaluate on training data. Use 3 splits: train to fit, validation to tune, test to evaluate finally. Cross-validation (k-fold) is the gold standard. Most beginners skip this and build models that don't generalise.</div>
+        <div class="topic-tile-why">→ #1 mistake beginners make</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📊</span><div class="topic-tile-name">Choosing the Right Metric</div></div>
+        <div class="topic-tile-desc">Accuracy is misleading on imbalanced data. Use Precision/Recall for fraud detection. AUC-ROC for ranking problems. RMSE/MAE for regression. Picking the wrong metric leads to genuinely wrong decisions.</div>
+        <div class="topic-tile-why">→ Wrong metric = wrong model in production</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">⚖️</span><div class="topic-tile-name">Overfitting vs Underfitting</div></div>
+        <div class="topic-tile-desc">Overfitting: model memorises training data, fails on new data. Underfitting: model is too simple to capture patterns. Fix with regularisation (L1/L2), more data, simpler models, or dropout.</div>
+        <div class="topic-tile-why">→ 99% training accuracy can mean 60% real accuracy</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔧</span><div class="topic-tile-name">Feature Engineering</div></div>
+        <div class="topic-tile-desc">Handle missing values (imputation vs deletion), encode categories (one-hot, label, target encoding), scale numerics (StandardScaler, MinMax). Better features beat better models every single time.</div>
+        <div class="topic-tile-why">→ 80% of ML effort happens here</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🎯</span><div class="topic-tile-name">Hyperparameter Tuning</div></div>
+        <div class="topic-tile-desc">Grid Search, Random Search, Bayesian Optimisation. Model parameters are learned from data — hyperparameters (learning rate, tree depth) are set by you. Tuning them properly doubles model performance.</div>
+        <div class="topic-tile-why">→ How you go from good to great model</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔍</span><div class="topic-tile-name">Explainability (SHAP)</div></div>
+        <div class="topic-tile-desc">SHAP values show which features matter most for each prediction. Critical for production AI where stakeholders ask "why did the model decide this?" Required for regulated industries.</div>
+        <div class="topic-tile-why">→ Business trust requires explanations</div>
+      </div>
+    </div>
+
+    <!-- ML FREE COURSES -->
+    <div class="block-label">Best Free &amp; Paid ML Courses</div>
+    <div class="res-card-grid">
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Stanford</span><div class="res-card-title">Andrew Ng — ML Specialisation (Coursera)</div></div>
+        <div class="res-card-meta">4M+ enrolments. The most watched ML course in history. Andrew Ng created the field's education. Audit for free — pay only for the certificate. Non-negotiable for serious learners.</div>
+        <div class="res-card-url">coursera.org/specializations/machine-learning-introduction · Free to audit</div>
+        <div class="res-card-stars">★★★★★ · The foundational ML course, period.</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE</span><div class="res-card-title">fast.ai — Practical Deep Learning for Coders</div></div>
+        <div class="res-card-meta">Top-down, practical, free. Teaches you to build state-of-the-art models before explaining theory. Recommended by Andrej Karpathy and endorsed by Jeremy Howard, one of the most influential ML educators.</div>
+        <div class="res-card-url">fast.ai · course.fast.ai</div>
+        <div class="res-card-stars">★★★★★ · Best practical ML course — free forever</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE · Interactive</span><div class="res-card-title">Kaggle ML Courses — Intro + Intermediate ML</div></div>
+        <div class="res-card-meta">Free browser-based ML courses directly on real competition data. Covers the entire scikit-learn pipeline: EDA, feature engineering, model training, validation. Most hands-on free option available.</div>
+        <div class="res-card-url">kaggle.com/learn/intro-to-machine-learning · kaggle.com/learn/intermediate-machine-learning</div>
+        <div class="res-card-stars">★★★★★ · Best free hands-on ML training</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-yt">YT · 4M Views</span><div class="res-card-title">StatQuest — Machine Learning Playlist</div></div>
+        <div class="res-card-meta">Josh Starmer explains every single ML algorithm with hand-drawn visuals and zero unnecessary jargon. Highest-rated ML explanation channel on YouTube. Watch when confused about any algorithm.</div>
+        <div class="res-card-url">youtube.com/@statquest · Playlist: "Machine Learning"</div>
+        <div class="res-card-stars">★★★★★ · Best conceptual explanations of ML algorithms</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-book">BOOK</span><div class="res-card-title">Hands-On ML with Scikit-Learn — Aurélien Géron</div></div>
+        <div class="res-card-meta">The most recommended ML book among practitioners worldwide. Covers the full pipeline from data to deployment with code examples. Chapters 1–8 are essential reading. Worth every rupee.</div>
+        <div class="res-card-url">O'Reilly — available in libraries and online</div>
+        <div class="res-card-stars">★★★★★ · The definitive practical ML textbook</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-badge rb-free">FREE</span><div class="res-card-title">Google ML Crash Course</div></div>
+        <div class="res-card-meta">Google's own free ML course used to train their engineers. Clear, structured, interactive exercises. Excellent visual explanations of gradient descent, neural networks, and model evaluation.</div>
+        <div class="res-card-url">developers.google.com/machine-learning/crash-course</div>
+        <div class="res-card-stars">★★★★★ · Built by Google, completely free</div>
+      </div>
+    </div>
+
+    <div class="block-label">Your Phase 3 project — build this</div>
+    <div class="project-card">
+      <div class="proj-num">03</div>
+      <div>
+        <div class="proj-name">End-to-End ML Pipeline</div>
+        <div class="proj-desc">Pick a Kaggle classification or regression problem. Follow the full lifecycle: define the problem, clean the data, do EDA, engineer features, train at least 3 different algorithms, compare them with the correct metrics (not just accuracy), tune the best one with cross-validation, and explain what the model learned using SHAP values. Write a README as if explaining to a non-technical manager. This is the project that gets your first interview call.</div>
+        <div class="proj-tags"><span class="proj-tag">Scikit-learn</span><span class="proj-tag">XGBoost</span><span class="proj-tag">Pandas</span><span class="proj-tag">SHAP</span><span class="proj-tag">Model Evaluation</span><span class="proj-tag">Kaggle</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHASE 4 ────────────────────────── -->
+  <section class="phase-section p4" id="p4">
+    <div class="phase-header-band">
+      <div class="phase-number-block">
+        <div class="pn-label">Phase</div>
+        <div class="pn-num">04</div>
+      </div>
+      <div class="phase-header-text">
+        <h2 class="phase-title">Deep Learning <em>&amp; LLMs</em></h2>
+        <p class="phase-subtitle">This is where modern AI engineering truly begins. Deep learning powers everything from ChatGPT to image generators — and LLMs are the defining technology of this era.</p>
+        <div class="phase-meta-chips">
+          <span class="meta-chip"><span>⏱</span> Month 5–8</span>
+          <span class="meta-chip"><span>💰</span> $0–$30/mo API costs</span>
+          <span class="meta-chip"><span>🎯</span> Goal: Work with modern AI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-label">Deep learning foundations</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🧠</span><div class="topic-tile-name">Neural Networks</div></div>
+        <div class="topic-tile-desc">Neurons, layers, weights, biases, activation functions. How a forward pass works. Understand this conceptually and visually before writing any PyTorch code.</div>
+        <div class="topic-tile-why">→ Foundation of all modern AI</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔄</span><div class="topic-tile-name">Backpropagation &amp; Training</div></div>
+        <div class="topic-tile-desc">How models learn by adjusting weights. Gradient descent, learning rate, batch size, epochs. Watch 3Blue1Brown's visual explanation before touching any code.</div>
+        <div class="topic-tile-why">→ How models actually learn</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔥</span><div class="topic-tile-name">PyTorch Basics</div></div>
+        <div class="topic-tile-desc">Tensors, autograd, building a simple neural network. PyTorch is the industry standard for both research and production AI — the one framework worth learning first.</div>
+        <div class="topic-tile-why">→ The framework most AI jobs use</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🏛️</span><div class="topic-tile-name">Transformer Architecture</div></div>
+        <div class="topic-tile-desc">Attention mechanism, self-attention, encoder-decoder. This is the architecture behind GPT, Claude, Gemini — every major LLM. The most important AI architecture in history.</div>
+        <div class="topic-tile-why">→ Powers all modern LLMs</div>
+      </div>
+    </div>
+
+    <div class="block-label">LLM engineering — the most in-demand skill right now</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">💬</span><div class="topic-tile-name">Prompt Engineering</div></div>
+        <div class="topic-tile-desc">System prompts, few-shot examples, chain-of-thought prompting. Getting consistent, reliable outputs from LLMs is a genuine skill most engineers underestimate.</div>
+        <div class="topic-tile-why">→ Used in every LLM-powered product</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🤗</span><div class="topic-tile-name">HuggingFace</div></div>
+        <div class="topic-tile-desc">The GitHub of AI models. Load pre-trained models in 3 lines of code. Transformers library, datasets, model hub. An essential platform every AI engineer uses weekly.</div>
+        <div class="topic-tile-why">→ The standard LLM toolbox</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔗</span><div class="topic-tile-name">RAG Systems</div></div>
+        <div class="topic-tile-desc">Retrieval-Augmented Generation — give LLMs access to your own documents and data. Embeddings, vector databases (ChromaDB, Pinecone). The backbone of most AI products today.</div>
+        <div class="topic-tile-why">→ Used in 80% of AI products</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">⛓️</span><div class="topic-tile-name">LangChain / LlamaIndex</div></div>
+        <div class="topic-tile-desc">Frameworks for chaining LLM calls, connecting to databases, and building AI agents with memory and tools. Start with LangChain basics, then explore agents.</div>
+        <div class="topic-tile-why">→ Most-used LLM dev frameworks</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🎯</span><div class="topic-tile-name">Fine-Tuning (LoRA / QLoRA)</div></div>
+        <div class="topic-tile-desc">Adapt open-source models (Llama, Mistral) to your specific domain without massive compute. Know when fine-tuning beats RAG and vice versa — this is a key judgment skill.</div>
+        <div class="topic-tile-why">→ Customise models for your domain</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔑</span><div class="topic-tile-name">OpenAI / Anthropic APIs</div></div>
+        <div class="topic-tile-desc">Call GPT-4, Claude, Gemini via API. Handle errors, manage costs, structure outputs with JSON mode. You can build your first chatbot in an afternoon with this.</div>
+        <div class="topic-tile-why">→ How most AI products are built today</div>
+      </div>
+    </div>
+
+    <div class="block-label">Best resources</div>
+    <div class="res-list">
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>fast.ai Deep Learning — best practical DL course online</span>
+      <span class="res-chip"><span class="res-badge rb-yt">YT</span>Andrej Karpathy "Neural Networks: Zero to Hero"</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>deeplearning.ai Short Courses — LangChain, RAG &amp; more</span>
+      <span class="res-chip"><span class="res-badge rb-tool">Tool</span>HuggingFace.co — model hub, tutorials, spaces</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>PyTorch official tutorials — pytorch.org/tutorials</span>
+      <span class="res-chip"><span class="res-badge rb-yt">YT</span>Yannic Kilcher — "Attention Is All You Need" explained</span>
+    </div>
+
+    <div class="block-label">Your fourth project — build this</div>
+    <div class="project-card">
+      <div class="proj-num">04</div>
+      <div>
+        <div class="proj-name">Domain-Specific RAG Chatbot</div>
+        <div class="proj-desc">Build a chatbot that answers questions about something you know well — your industry, a set of documents, a book, a company's products. Use LangChain + ChromaDB + OpenAI API. Deploy it with a simple Streamlit or Gradio UI so anyone can actually try it. This is a genuine portfolio piece that impresses hiring managers — not because it's flashy, but because it solves a real, recognisable problem.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">LangChain</span>
+          <span class="proj-tag">ChromaDB</span>
+          <span class="proj-tag">OpenAI API</span>
+          <span class="proj-tag">Streamlit</span>
+          <span class="proj-tag">Python</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHASE 5 ────────────────────────── -->
+  <section class="phase-section p5" id="p5">
+    <div class="phase-header-band">
+      <div class="phase-number-block">
+        <div class="pn-label">Phase</div>
+        <div class="pn-num">05</div>
+      </div>
+      <div class="phase-header-text">
+        <h2 class="phase-title">Build &amp; <em>Deploy AI</em></h2>
+        <p class="phase-subtitle">Building a model is one thing. Making it available to real users in a reliable, scalable way is what separates a data scientist from an AI engineer.</p>
+        <div class="phase-meta-chips">
+          <span class="meta-chip"><span>⏱</span> Month 8–12</span>
+          <span class="meta-chip"><span>💰</span> $0–$20/mo</span>
+          <span class="meta-chip"><span>🎯</span> Goal: Ship real, working AI products</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-label">MLOps &amp; deployment skills</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🐳</span><div class="topic-tile-name">Docker</div></div>
+        <div class="topic-tile-desc">Package your AI app so it runs identically everywhere. "It works on my machine" is not acceptable in production. Docker is how engineers ship with confidence.</div>
+        <div class="topic-tile-why">→ Required in 90% of AI job specs</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">⚡</span><div class="topic-tile-name">FastAPI</div></div>
+        <div class="topic-tile-desc">Build REST APIs that wrap your AI models. A FastAPI endpoint is how other apps and services call your model. Clean, fast, modern Python — the industry standard.</div>
+        <div class="topic-tile-why">→ Standard for serving ML models</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">☁️</span><div class="topic-tile-name">Cloud Deployment</div></div>
+        <div class="topic-tile-desc">Deploy on AWS, GCP, or Azure. At minimum, learn one platform and understand serverless (Lambda/Cloud Run) vs. always-on servers. Use free tiers to start.</div>
+        <div class="topic-tile-why">→ How real AI products are served</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🔁</span><div class="topic-tile-name">CI/CD with GitHub Actions</div></div>
+        <div class="topic-tile-desc">Auto-test and auto-deploy your code when you push to GitHub. Version control for ML models with MLflow. This is how modern engineering teams actually work.</div>
+        <div class="topic-tile-why">→ Separates engineers from coders</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">📡</span><div class="topic-tile-name">Model Monitoring</div></div>
+        <div class="topic-tile-desc">Data drift detection, performance degradation alerts, logging. Models degrade in production as the real world changes — you need to know when, and act fast.</div>
+        <div class="topic-tile-why">→ Keeps AI products healthy over time</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🛡️</span><div class="topic-tile-name">AI Safety &amp; Ethics Basics</div></div>
+        <div class="topic-tile-desc">Bias in models, EU AI Act awareness, responsible AI principles. Companies — especially global ones — are actively hiring for this knowledge. It's a genuine differentiator.</div>
+        <div class="topic-tile-why">→ Required for EU &amp; global roles</div>
+      </div>
+    </div>
+
+    <div class="block-label">Best resources</div>
+    <div class="res-list">
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>Docker "Get Started" official tutorial</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>FastAPI official docs — best written Python docs</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>AWS Free Tier — 12 months of free cloud usage</span>
+      <span class="res-chip"><span class="res-badge rb-yt">YT</span>"MLOps Course" — freeCodeCamp (3 hours)</span>
+      <span class="res-chip"><span class="res-badge rb-tool">Tool</span>Railway.app or Render.com — easiest free deployment</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>MLflow documentation — model tracking &amp; versioning</span>
+    </div>
+
+    <div class="block-label">Your capstone project — build this</div>
+    <div class="project-card">
+      <div class="proj-num">05</div>
+      <div>
+        <div class="proj-name">Production AI Application</div>
+        <div class="proj-desc">Build something real that solves a real problem. Dockerise it. Serve it with FastAPI. Connect it to a frontend (Streamlit or simple HTML). Deploy it to the cloud. Add basic monitoring. Write a proper README with an architecture diagram, setup instructions, and a live demo link. This single project can replace a CV. Use your domain expertise — a finance person building a financial AI analyser has a compelling story. A marketer building a content optimiser has a story too.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">Docker</span>
+          <span class="proj-tag">FastAPI</span>
+          <span class="proj-tag">Cloud Deploy</span>
+          <span class="proj-tag">LLM / ML</span>
+          <span class="proj-tag">Monitoring</span>
+          <span class="proj-tag">GitHub</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHASE 6 ────────────────────────── -->
+  <section class="phase-section p6" id="p6">
+    <div class="phase-header-band">
+      <div class="phase-number-block">
+        <div class="pn-label">Phase</div>
+        <div class="pn-num">06</div>
+      </div>
+      <div class="phase-header-text">
+        <h2 class="phase-title">Get <em>Hired</em></h2>
+        <p class="phase-subtitle">The technical work is done. Now convert it into interviews and job offers. Your background is not a weakness — it's the bridge between AI capability and business value.</p>
+        <div class="phase-meta-chips">
+          <span class="meta-chip"><span>⏱</span> Month 12–18</span>
+          <span class="meta-chip"><span>💰</span> $0</span>
+          <span class="meta-chip"><span>🎯</span> Goal: Land your first AI role</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-label">Build your visibility</div>
+    <div class="topic-grid">
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🐙</span><div class="topic-tile-name">GitHub Portfolio</div></div>
+        <div class="topic-tile-desc">3–5 clean, well-documented projects. Each with a proper README, clear problem statement, and ideally a live demo. Your GitHub profile is your CV for AI roles.</div>
+        <div class="topic-tile-why">→ First thing every interviewer checks</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">💼</span><div class="topic-tile-name">LinkedIn Optimisation</div></div>
+        <div class="topic-tile-desc">Strong headline with AI keywords. Feature your projects prominently. Post weekly about what you've been learning. Companies hire people they've already seen thinking out loud.</div>
+        <div class="topic-tile-why">→ 60% of AI jobs are filled here</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">✍️</span><div class="topic-tile-name">Write &amp; Publish</div></div>
+        <div class="topic-tile-desc">Write tutorials on Medium or Substack explaining what you built and how. Teaching forces deeper understanding — and makes you visible to recruiters who weren't looking for you.</div>
+        <div class="topic-tile-why">→ Builds inbound opportunities</div>
+      </div>
+      <div class="topic-tile">
+        <div class="topic-tile-top"><span class="topic-emoji">🏆</span><div class="topic-tile-name">Kaggle Competitions</div></div>
+        <div class="topic-tile-desc">Even finishing mid-table proves you can work with real, messy data under pressure. A gold medal is genuinely career-changing. Start with Getting Started competitions.</div>
+        <div class="topic-tile-why">→ Proof of skill beyond certificates</div>
+      </div>
+    </div>
+
+    <div class="block-label">Certifications worth getting</div>
+    <div class="res-list">
+      <span class="res-chip"><span class="res-badge rb-cert">Cert</span>AWS Certified ML Specialty</span>
+      <span class="res-chip"><span class="res-badge rb-cert">Cert</span>GCP Professional ML Engineer</span>
+      <span class="res-chip"><span class="res-badge rb-cert">Cert</span>TensorFlow Developer Certificate</span>
+      <span class="res-chip"><span class="res-badge rb-cert">Cert</span>deeplearning.ai ML Specialisation</span>
+      <span class="res-chip"><span class="res-badge rb-free">Free</span>HuggingFace NLP Course Certificate</span>
+    </div>
+
+    <div class="block-label">Job search checklist</div>
+    <div class="checklist">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> CV tailored with keywords from actual job descriptions (ATS filters first)</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Apply to AI Engineer, ML Engineer, and Data Scientist roles — they overlap heavily</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Frame your domain background as a feature, not a gap — "Finance + AI" is rare and valuable</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Prepare for system design questions: "how would you architect a RAG system?"</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Practice LeetCode Easy + Medium (that's all you need for most AI roles)</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> For global roles: research EU AI Act basics — most candidates don't bother, you should</div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-box"></div> Apply to 5 companies per week — consistency beats spray-and-pray every time</div>
+    </div>
+  </section>
 
 </div>
 
-<script>
-  // Animate progress bar
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('progressFill').style.width = '100%';
-    }, 300);
-  });
+<!-- ═══════════════════════════════════════
+     SALARY SECTION
+═══════════════════════════════════════ -->
+<section class="salary-section">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-eyebrow" style="color:rgba(255,255,255,0.3);">What to expect</div>
+    <h2 class="section-heading" style="color:#fff;">Where this journey <em style="color:var(--p3)">can take you</em></h2>
+    <div class="salary-grid">
+      <div class="salary-tile">
+        <div class="salary-level">Junior AI Engineer · 0–2 years</div>
+        <div class="salary-val">₹8–15<em>L</em></div>
+        <div class="salary-note">India · $70–100K globally</div>
+      </div>
+      <div class="salary-tile">
+        <div class="salary-level">Mid-Level AI Engineer · 2–5 years</div>
+        <div class="salary-val">₹20–40<em>L</em></div>
+        <div class="salary-note">India · $100–160K globally</div>
+      </div>
+      <div class="salary-tile">
+        <div class="salary-level">Senior AI Engineer · 5+ years</div>
+        <div class="salary-val">₹50<em>L+</em></div>
+        <div class="salary-note">India · $160–250K globally</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  // Toggle phases
-  function toggle(header) {
-    const body = header.nextElementSibling;
-    const icon = header.querySelector('.toggle-icon');
-    body.classList.toggle('collapsed');
-    icon.classList.toggle('rotated');
-  }
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-left">Zero → AI Engineer</div>
+  <div class="footer-note">
+    This roadmap was built to be honest, not just motivational. The path is long but completely learnable by anyone willing to show up consistently. The only thing separating people who make it from people who don't is daily practice — not talent, not background, not age.
+  </div>
+  <div class="footer-credit">Built by Sreeja</div>
+</footer>
+
+<script>
+// Scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.07 });
+document.querySelectorAll('.phase-section').forEach(el => io.observe(el));
+
+// Checklist
+function tick(item) {
+  item.classList.toggle('checked');
+  item.querySelector('.cl-box').textContent = item.classList.contains('checked') ? '✓' : '';
+}
+
+// PDF
+function savePDF() {
+  document.querySelectorAll('.phase-section').forEach(el => el.classList.add('show'));
+  setTimeout(() => window.print(), 300);
+}
 </script>
 </body>
 </html>
